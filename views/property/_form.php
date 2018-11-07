@@ -108,7 +108,7 @@ use kartik\sortinput\SortableInput;
                     'class' => 'btn btn-sm btn-danger',
                     'title' => 'Удалить',
                     'aria-label' => "Удалить",
-                    'data-pjax' => "0",
+                    'data-pjax' => true,
                     'data-method' => "post",
                     'data-confirm' => "Вы действительно хотите удалить данное фото?"
                 ]) .

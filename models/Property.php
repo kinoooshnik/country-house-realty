@@ -32,7 +32,6 @@ use yii\db\Query;
  * @property int $land_area
  * @property int $build_area
  * @property string $description
- * @property string $property_features
  * @property int $user_id
  * @property boolean $is_archive
  * @property int $created_at

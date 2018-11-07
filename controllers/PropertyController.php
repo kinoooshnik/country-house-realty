@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\DBTransferForm;
 use app\models\Photo;
 use app\models\PropertyForm;
 use Yii;
@@ -128,6 +129,24 @@ class PropertyController extends Controller
         ]);
     }
 
+    public function actionTransfer()
+    {
+        $form = new DBTransferForm();
+        if ($form->load(Yii::$app->request->post())) {
+            $form->imageFiles = UploadedFile::getInstances($form, 'imageFiles');
+            if ($form->save() && $form->upload()) {
+                Yii::$app->session->setFlash('success', 'Успех');
+            }
+            else {
+                Yii::$app->session->setFlash('error', 'Что-то пошло не так');
+            }
+        }
+
+        return $this->render('transfer', [
+            'transferForm' => $form,
+        ]);
+    }
+
     /**
      * Deletes an existing Property model.
      * If deletion is successful, the browser will be redirected to the 'admin' page.
@@ -178,12 +197,13 @@ class PropertyController extends Controller
     public function actionDeletePhoto($photoId, $projectId)
     {
         $photoModel = Photo::find()->where(['id' => $photoId])->limit(1)->one();
-
-        if (unlink(Yii::getAlias('@app') . '/web/uploads/property/original/' . $photoModel->name)) {
-            $photoModel->delete();
-        } else {
-            Yii::$app->session->setFlash('error', 'Не удалось удалить фото');
+        if(!empty($photoModel)) {
+            if (unlink(Yii::getAlias('@app') . '/web/uploads/property/original/' . $photoModel->name)) {
+                $photoModel->delete();
+            } else {
+                Yii::$app->session->setFlash('error', 'Не удалось удалить фото');
+            }
         }
-        return $this->redirect(['update', 'id' => $projectId]);
+        return $this->redirect(['update', 'id' => $projectId, '#' => 'propertyform-photos_sequence-sortable']);
     }
 }

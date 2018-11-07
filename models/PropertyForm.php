@@ -119,8 +119,6 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
             if ($success && is_array($this->property_features)) {
                 $propertyFeaturesExist = $this->_propertyModel->getPropertyFeatures()->all();
                 $propertyFeaturesSelected = (new \ArrayObject($this->property_features))->getArrayCopy();
-
-                \Yii::debug(\yii\helpers\Json::encode($propertyFeaturesSelected, JSON_PRETTY_PRINT), __METHOD__);
                 foreach ($propertyFeaturesSelected as $PFSKey => $propertyFeatureSelected) {
                     foreach ($propertyFeaturesExist as $PFEKey => $propertyFeatureExist) {
                         if ($propertyFeatureExist->name == $propertyFeatureSelected) {
@@ -139,7 +137,6 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
                         $tmp->delete();
                     }
                 }
-                \Yii::debug(\yii\helpers\Json::encode($propertyFeaturesSelected, JSON_PRETTY_PRINT), __METHOD__);
                 foreach ($propertyFeaturesSelected as $propertyFeatureSelected) {
                     $propertyFeature = PropertyFeatures::find()->where(['name' => $propertyFeatureSelected])->one();
                     if (empty($propertyFeature)) {

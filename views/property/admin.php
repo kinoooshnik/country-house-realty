@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Добавить объект', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::a('Направления', 'direction', ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Направления', '\direction', ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'responsiveWrap' => false,
