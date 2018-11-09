@@ -65,6 +65,11 @@ class PropertyController extends Controller
     {
         $searchModel = new PropertySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->sort = [
+            'defaultOrder' => [
+                'id' => SORT_DESC,
+            ]
+        ];
 
         return $this->render('admin', [
             'searchModel' => $searchModel,
@@ -178,7 +183,7 @@ class PropertyController extends Controller
     public function actionDeletePhoto($photoId, $projectId)
     {
         $photoModel = Photo::find()->where(['id' => $photoId])->limit(1)->one();
-        if(!empty($photoModel)) {
+        if (!empty($photoModel)) {
             if (unlink(Yii::getAlias('@app') . '/web/uploads/property/original/' . $photoModel->name)) {
                 $photoModel->delete();
             } else {
