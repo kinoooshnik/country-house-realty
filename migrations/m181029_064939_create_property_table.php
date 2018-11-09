@@ -22,8 +22,8 @@ class m181029_064939_create_property_table extends Migration
             'currency' => "ENUM('₽', '$', '€') NOT NULL",
             'price' => $this->integer()->notNull(),
             'address' => $this->string()->notNull(),
-            'map_latitude' => $this->float()->notNull(),
-            'map_longitude' => $this->float()->notNull(),
+            'map_latitude' => $this->float(),
+            'map_longitude' => $this->float(),
             'direction_id' => $this->integer(),
             'distance_to_mrar' => $this->integer(),//`range`
             'with_finishing' => $this->boolean(),

@@ -100,7 +100,7 @@ class Property extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'property_name', 'property_type', 'currency', 'price', 'address', 'map_latitude', 'map_longitude'], 'required'],
+            [['user_id', 'property_name', 'property_type', 'currency', 'price', 'address'], 'required'],
             [['user_id', 'direction_id', 'distance_to_mrar', 'price'], 'integer'],
             [['address', 'property_type', 'currency', 'bathrooms', 'bedrooms', 'garage', 'description'], 'string'],
             [['property_type', 'currency', 'bathrooms', 'bedrooms', 'garage', 'description'], 'default', 'value' => null],
