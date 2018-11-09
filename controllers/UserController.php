@@ -116,7 +116,7 @@ class UserController extends Controller
             $userInfoForm->save();
         }
 
-        $userNewPassForm = new UserNewPassForm(Yii::$app->user->identity);
+        $userNewPassForm = new UserNewPassForm($userModel);
         if ($userNewPassForm->load(Yii::$app->request->post())) {
             $userNewPassForm->save();
         }
