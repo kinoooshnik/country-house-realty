@@ -2,12 +2,11 @@
 
 namespace app\controllers;
 
-use app\models\DBTransferForm;
 use app\models\Photo;
 use app\models\PropertyForm;
+use app\models\PropertySearch;
 use Yii;
 use app\models\Property;
-use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,11 +63,11 @@ class PropertyController extends Controller
      */
     public function actionAdmin()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Property::find(),
-        ]);
+        $searchModel = new PropertySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('admin', [
+            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
@@ -126,24 +125,6 @@ class PropertyController extends Controller
 
         return $this->render('update', [
             'propertyForm' => $propertyForm,
-        ]);
-    }
-
-    public function actionTransfer()
-    {
-        $form = new DBTransferForm();
-        if ($form->load(Yii::$app->request->post())) {
-            $form->imageFiles = UploadedFile::getInstances($form, 'imageFiles');
-            if ($form->save() && $form->upload()) {
-                Yii::$app->session->setFlash('success', 'Успех');
-            }
-            else {
-                Yii::$app->session->setFlash('error', 'Что-то пошло не так');
-            }
-        }
-
-        return $this->render('transfer', [
-            'transferForm' => $form,
         ]);
     }
 

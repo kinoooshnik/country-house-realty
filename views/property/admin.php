@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
+/* @var $searchModel app\models\PropertySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Недвижимость';
@@ -20,6 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'responsiveWrap' => false,
         'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
         'columns' => [
             [
                 'attribute' => 'image',
