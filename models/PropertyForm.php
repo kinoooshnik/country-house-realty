@@ -51,7 +51,7 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
     public function rules()
     {
         return [
-            [['property_name', 'property_type', 'ad_type', 'currency', 'price', 'address', 'map_latitude', 'map_longitude'], 'required'],
+            [['property_name', 'property_type', 'ad_type', 'currency', 'price', 'address'], 'required'],
             [['id', 'direction_id', 'distance_to_mrar', 'price'], 'integer'],
             [['address', 'property_type', 'currency', 'bathrooms', 'bedrooms', 'garage', 'description', 'photos_sequence'], 'string'],
             [['map_latitude', 'map_longitude', 'land_area', 'build_area'], 'number'],
