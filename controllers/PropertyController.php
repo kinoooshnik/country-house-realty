@@ -160,7 +160,6 @@ class PropertyController extends Controller
 
     public function actionFeaturesList($q = null, $id = null)
     {
-        \Yii::debug(\yii\helpers\Json::encode($q, JSON_PRETTY_PRINT), __METHOD__);
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $out = ['results' => ['id' => '', 'text' => '']];
         $data = (new \yii\db\Query())

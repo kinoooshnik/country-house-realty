@@ -76,7 +76,6 @@ use kartik\sortinput\SortableInput;
     <?= $form->field($propertyForm, 'is_archive')->checkbox(['custom' => true])->hint('Объекты в архиве не показываются пользователю.'); ?>
 
     <?= $form->field($propertyForm, 'property_features')->widget(Select2::classname(), [
-        'data' => [],
         'options' => ['placeholder' => 'Выберете или добавьте особенности ...', 'multiple' => true],
         'pluginOptions' => [
             'tags' => true,
