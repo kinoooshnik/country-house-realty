@@ -9,7 +9,7 @@ use app\models\User;
 class UserNewPassForm extends Model implements \app\models\ReturnMessageInterface
 {
     public $password;
-    public $password_repeat;
+//    public $password_repeat;
 
     private $_userModel = false;
 
@@ -26,7 +26,7 @@ class UserNewPassForm extends Model implements \app\models\ReturnMessageInterfac
     {
         return [
             [['password'], 'required'],
-            ['password', 'compare', 'compareAttribute' => 'password_repeat'],
+//            ['password', 'compare', 'compareAttribute' => 'password_repeat'],
         ];
     }
 

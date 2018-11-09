@@ -22,11 +22,10 @@ use kartik\form\ActiveForm;
                 'asButton' => true
             ]
         ]
-    ])->passwordInput(['id' => 'usercreateform-password',]);
-    ?>
-    <?= $form->field($userNewPassForm, 'password_repeat', [
-    ])->passwordInput(['id' => 'usercreateform-password-repeat',]);
-    ?>
+    ])->passwordInput();
+//    <?= $form->field($userNewPassForm, 'password_repeat', [
+//    ])->passwordInput();
+//    ?>
     <script>
         function gen_password(fieldId, fieldRepeatId) {
             var password = "";
@@ -35,7 +34,7 @@ use kartik\form\ActiveForm;
                 password += symbols.charAt(Math.floor(Math.random() * symbols.length));
             }
             document.getElementById(fieldId).value = password;
-            document.getElementById(fieldRepeatId).value = password;
+            // document.getElementById(fieldRepeatId).value = password;
         }
     </script>
 

@@ -116,6 +116,8 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
                 $success = false;
             }
             //Ососбенности
+
+            \Yii::debug(\yii\helpers\Json::encode($this->property_features, JSON_PRETTY_PRINT), __METHOD__);
             if ($success && is_array($this->property_features)) {
                 $propertyFeaturesExist = $this->_propertyModel->getPropertyFeatures()->all();
                 $propertyFeaturesSelected = (new \ArrayObject($this->property_features))->getArrayCopy();
@@ -285,7 +287,7 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
         }
         $tmp = $this->_propertyModel->getPropertyFeatures()->all();
         foreach ($tmp as $propertyFeature) {
-            $this->property_features[] = $propertyFeature->name;
+            $this->property_features[$propertyFeature->id] = $propertyFeature->name;
         }
 
         $tmp = $this->_propertyModel->getPropertyPhotos()->orderBy('position')->all();

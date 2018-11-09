@@ -171,6 +171,7 @@ class PropertyController extends Controller
         }
         $data = $data->all();
         $out['results'] = array_values($data);
+        \Yii::debug(\yii\helpers\Json::encode($out, JSON_PRETTY_PRINT), __METHOD__);
         return $out;
     }
 
