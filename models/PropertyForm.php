@@ -67,7 +67,7 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
             ['ad_type', 'in', 'range' => ['is_rent', 'is_sale'], 'allowArray' => true],
             ['property_features', 'each', 'rule' => ['string']],
             ['photos', 'each', 'rule' => ['string']],
-            [['imageFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 30],
+            [['imageFiles'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg', 'maxFiles' => 30],
         ];
     }
 
