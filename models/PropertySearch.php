@@ -18,7 +18,7 @@ class PropertySearch extends Property
     public function rules()
     {
         return [
-            [['id', 'is_sale', 'is_rent', 'price', 'direction_id', 'distance_to_mrar', 'with_finishing', 'with_furniture', 'user_id', 'is_archive', 'created_at', 'updated_at'], 'integer'],
+            [['id', 'is_sale', 'is_rent', 'sale_price', 'rent_price', 'direction_id', 'distance_to_mrar', 'with_finishing', 'with_furniture', 'user_id', 'is_archive', 'created_at', 'updated_at'], 'integer'],
             [['property_name', 'property_slug', 'property_type', 'currency', 'address', 'bathrooms', 'bedrooms', 'garage', 'description'], 'safe'],
             [['map_latitude', 'map_longitude', 'land_area', 'build_area'], 'number'],
         ];
@@ -63,7 +63,8 @@ class PropertySearch extends Property
             'id' => $this->id,
             'is_sale' => $this->is_sale,
             'is_rent' => $this->is_rent,
-            'price' => $this->price,
+            'sale_price' => $this->sale_price,
+            'rent_price' => $this->rent_price,
             'map_latitude' => $this->map_latitude,
             'map_longitude' => $this->map_longitude,
             'direction_id' => $this->direction_id,

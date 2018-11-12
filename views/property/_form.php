@@ -26,7 +26,9 @@ use kartik\sortinput\SortableInput;
 
     <?= $form->field($propertyForm, 'currency')->radioButtonGroup(['₽' => '₽', '$' => '$', '€' => '€']); ?>
 
-    <?= $form->field($propertyForm, 'price')->textInput() ?>
+	<?= $form->field($propertyForm, 'sale_price')->textInput() ?>
+	
+	<?= $form->field($propertyForm, 'rent_price')->textInput() ?>
 
     <?= $form->field($propertyForm, 'address')->textInput(['maxlength' => true]) ?>
 

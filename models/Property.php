@@ -18,7 +18,8 @@ use yii\db\Query;
  * @property boolean $is_sale
  * @property boolean $is_rent
  * @property string $currency
- * @property int $price
+ * @property int $price_sale
+ * @property int $price_rent
  * @property string $address
  * @property double $map_latitude
  * @property double $map_longitude
@@ -58,7 +59,8 @@ class Property extends ActiveRecord
         'with_finishing' => 'Тип отделки',
         'with_furniture' => 'Наличее мебели',
         'currency' => 'Валюта',
-        'price' => 'Цена',
+        'sale_price' => 'Цена продажи',
+        'rent_price' => 'Цена аренды',
         'address' => 'Адрес',
         'map_latitude' => 'Широта',
         'map_longitude' => 'Долгота',
@@ -100,8 +102,8 @@ class Property extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'property_name', 'property_type', 'currency', 'price', 'address'], 'required'],
-            [['user_id', 'direction_id', 'distance_to_mrar', 'price'], 'integer'],
+            [['user_id', 'property_name', 'property_type', 'currency', 'address'], 'required'],
+            [['user_id', 'direction_id', 'distance_to_mrar', 'sale_price', 'rent_price'], 'integer'],
             [['address', 'property_type', 'currency', 'bathrooms', 'bedrooms', 'garage', 'description'], 'string'],
             [['property_type', 'currency', 'bathrooms', 'bedrooms', 'garage', 'description'], 'default', 'value' => null],
             [['map_latitude', 'map_longitude', 'land_area', 'build_area'], 'number'],

@@ -13,7 +13,8 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
     public $property_type;
     public $ad_type;
     public $currency;
-    public $price;
+    public $sale_price;
+    public $rent_price;
     public $address;
     public $map_latitude;
     public $map_longitude;
@@ -51,8 +52,8 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
     public function rules()
     {
         return [
-            [['property_name', 'property_type', 'ad_type', 'currency', 'price', 'address'], 'required'],
-            [['id', 'direction_id', 'distance_to_mrar', 'price'], 'integer'],
+            [['property_name', 'property_type', 'ad_type', 'currency', 'address'], 'required'],
+            [['id', 'direction_id', 'distance_to_mrar', 'sale_price', 'rent_price'], 'integer'],
             [['address', 'property_type', 'currency', 'bathrooms', 'bedrooms', 'garage', 'description', 'photos_sequence'], 'string'],
             [['map_latitude', 'map_longitude', 'land_area', 'build_area'], 'number'],
             [['property_name'], 'string', 'max' => 255],
@@ -82,7 +83,8 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
                 $this->_propertyModel->is_sale = array_search('is_sale', $this->ad_type) !== false ? true : false;
             }
             $this->_propertyModel->currency = $this->currency;
-            $this->_propertyModel->price = $this->price;
+            $this->_propertyModel->sale_price = $this->sale_price;
+            $this->_propertyModel->rent_price = $this->rent_price;
             $this->_propertyModel->address = $this->address;
             $this->_propertyModel->map_latitude = $this->map_latitude;
             $this->_propertyModel->map_longitude = $this->map_longitude;
@@ -255,7 +257,8 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
             $this->ad_type[] = 'is_sale';
         }
         $this->currency = $this->_propertyModel->currency;
-        $this->price = $this->_propertyModel->price;
+        $this->sale_price = $this->_propertyModel->sale_price;
+        $this->rent_price = $this->_propertyModel->rent_price;
         $this->address = $this->_propertyModel->address;
         $this->map_latitude = $this->_propertyModel->map_latitude;
         $this->map_longitude = $this->_propertyModel->map_longitude;
