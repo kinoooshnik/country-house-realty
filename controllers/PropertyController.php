@@ -98,10 +98,10 @@ class PropertyController extends Controller
         if ($propertyForm->load(Yii::$app->request->post())) {
             $propertyForm->imageFiles = UploadedFile::getInstances($propertyForm, 'imageFiles');
             if ($propertyForm->save() && $propertyForm->upload()) {
-                Yii::$app->session->setFlash($propertyForm->getReturnMessageCode(), $propertyForm->getReturnMessage());
-                $propertyForm->loadAttributes();
-                //return $this->redirect(['update', 'id' => $newProperty->id]);
-            }
+                return $this->redirect(['update', 'id' => $newProperty->id]);
+            } else {
+				Yii::$app->session->setFlash('danger', implode('<br>', Json::encode($propertyForm->getErrorSummary(true), JSON_PRETTY_PRINT)));
+			 }
         }
 //        \Yii::debug(\yii\helpers\Json::encode($propertyForm, JSON_PRETTY_PRINT), __METHOD__);
         return $this->render('create', [
@@ -123,8 +123,9 @@ class PropertyController extends Controller
         if ($propertyForm->load(Yii::$app->request->post())) {
             $propertyForm->imageFiles = UploadedFile::getInstances($propertyForm, 'imageFiles');
             if ($propertyForm->save() && $propertyForm->upload()) {
-                Yii::$app->session->setFlash($propertyForm->getReturnMessageCode(), $propertyForm->getReturnMessage());
                 return $this->redirect(['update', 'id' => $propertyModel->id]);
+            } else {
+               Yii::$app->session->setFlash('danger', implode('<br>', Json::encode($propertyForm->getErrorSummary(true), JSON_PRETTY_PRINT)));
             }
         }
 

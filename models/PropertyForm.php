@@ -6,7 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
 
-class PropertyForm extends Model implements \app\models\ReturnMessageInterface
+class PropertyForm extends Model
 {
     public $id;
     public $property_name;
@@ -37,12 +37,15 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
      */
     public $imageFiles;
 
-    private $_propertyModel = false;
+    /**
+     * @var Property
+     */
+    private $_propertyModel;
 
     private $returnMessageCode = null;
     private $returnMessage = null;
 
-    function __construct(Property $propertyModel, array $config = [])
+    public function __construct(Property $propertyModel, array $config = [])
     {
         $this->_propertyModel = $propertyModel;
         $this->loadAttributes();
@@ -76,6 +79,21 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
     {
         $success = false;
         if ($this->validate()) {
+			if ($this->with_finishing == '🛇') {
+				$this->with_finishing = null;
+			}
+			if ($this->with_furniture == '🛇') {
+				$this->with_furniture = null;
+			}
+			if ($this->bathrooms == '🛇') {
+				$this->bathrooms = null;
+			}
+			if ($this->bedrooms == '🛇') {
+				$this->bedrooms = null;
+			}
+			if ($this->garage == '🛇') {
+				$this->garage = null;
+			}
             $this->_propertyModel->property_name = $this->property_name;
             $this->_propertyModel->property_type = $this->property_type;
             if (is_array($this->ad_type)) {
@@ -102,24 +120,27 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
 
             if ($this->_propertyModel->isNewRecord) {
                 if ($this->_propertyModel->save()) {
-                    $this->setReturnMessage('success',
-                        strtr('Объект "{nameToShow}" создан.', ['{nameToShow}' => $this->property_name,]));
+                    Yii::$app->session->setFlash(
+                         'success',
+                        strtr('Объект "{nameToShow}" создан.', ['{nameToShow}' => $this->property_name,])
+                     );
                     $success = true;
                 } else {
-                    $this->setReturnMessage('error', 'Не удалось создать объект');
+                    Yii::$app->session->setFlash('error', 'Не удалось создать объект');
                     $success = false;
                 }
             } elseif ($this->_propertyModel->save()) {
-                $this->setReturnMessage('success',
-                    strtr('Объект "{nameToShow}" успешно изменен.', ['{nameToShow}' => $this->property_name,]));
+                Yii::$app->session->setFlash(
+                     'success',
+                    strtr('Объект "{nameToShow}" успешно изменен.', ['{nameToShow}' => $this->property_name,])
+                 );
                 $success = true;
             } else {
-                $this->setReturnMessage('error', 'Не удалось изменить объект');
+                Yii::$app->session->setFlash('error', 'Не удалось изменить объект');
                 $success = false;
             }
+            
             //Ососбенности
-
-            \Yii::debug(\yii\helpers\Json::encode($this->property_features, JSON_PRETTY_PRINT), __METHOD__);
             if ($success && is_array($this->property_features)) {
                 $propertyFeaturesExist = $this->_propertyModel->getPropertyFeatures()->all();
                 $propertyFeaturesSelected = (new \ArrayObject($this->property_features))->getArrayCopy();
@@ -172,29 +193,19 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
                 }
             }
         } else {
-            $this->setReturnMessage('error', 'Введены некорректные данные');
+            Yii::$app->session->setFlash('error', 'Введены некорректные данные');
         }
+        \Yii::debug(\yii\helpers\Json::encode($this->getErrorSummary(true), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
+        \Yii::debug(\yii\helpers\Json::encode($this->_propertyModel, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
         return $success;
     }
-
-    public function validate($attributeNames = null, $clearErrors = true)
+    
+    public function getErrorSummary($showAllErrors)
     {
-        if ($this->with_finishing == '🛇') {
-            $this->with_finishing = null;
-        }
-        if ($this->with_furniture == '🛇') {
-            $this->with_furniture = null;
-        }
-        if ($this->bathrooms == '🛇') {
-            $this->bathrooms = null;
-        }
-        if ($this->bedrooms == '🛇') {
-            $this->bedrooms = null;
-        }
-        if ($this->garage == '🛇') {
-            $this->garage = null;
-        }
-        return parent::validate($attributeNames, $clearErrors);
+        if (empty(parent::getErrorSummary($showAllErrors))) {
+			return $this->_propertyModel->getErrorSummary($showAllErrors);
+		}
+		return parent::getErrorSummary($showAllErrors);
     }
 
     public function upload()
@@ -223,11 +234,11 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
                 }
             }
             if (count($this->imageFiles) != 0) {
-                $this->setReturnMessage('success', 'Фото успешно загружены.');
+                Yii::$app->session->setFlash('success', 'Фото успешно загружены.');
             }
             return true;
         } else {
-            $this->setReturnMessage('error', 'Не удалось загрузить фото.');
+            Yii::$app->session->setFlash('error', 'Не удалось загрузить фото.');
             return false;
         }
     }
@@ -304,21 +315,5 @@ class PropertyForm extends Model implements \app\models\ReturnMessageInterface
                 $this->photos[$photo->id] = $photo->name;
             }
         }
-    }
-
-    public function setReturnMessage($code, $message)
-    {
-        $this->returnMessageCode = $code;
-        $this->returnMessage = $message;
-    }
-
-    public function getReturnMessageCode()
-    {
-        return $this->returnMessageCode;
-    }
-
-    public function getReturnMessage()
-    {
-        return $this->returnMessage;
     }
 }
