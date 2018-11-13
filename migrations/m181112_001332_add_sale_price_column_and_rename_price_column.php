@@ -33,7 +33,7 @@ class m181112_001332_add_sale_price_column_and_rename_price_column extends Migra
      */
     public function safeDown()
     {
-		$this->addColumn('property', 'price', $this->integer()->unique());
+		$this->addColumn('property', 'price', $this->integer());
         $properties = Property::find()->all();
         foreach ($properties as $property) {
             if (!empty($property->rent_price)) {
