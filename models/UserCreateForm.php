@@ -5,7 +5,7 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 
-class UserCreateForm extends Model implements \app\models\ReturnMessageInterface
+class UserCreateForm extends Model
 {
     public $email;
     public $first_name;
@@ -41,7 +41,7 @@ class UserCreateForm extends Model implements \app\models\ReturnMessageInterface
             $this->_userModel->setNewPassword($this->password);
 
             if ($this->_userModel->save()) {
-                $this->setReturnMessage('success',
+                Yii::$app->session->setFlash('success userCreateForm',
                     strtr(
                         'Пользователь {nameToShow} создан.<br> Данные для входа:<br>Логин: {login}<br>Пароль: {password}',
                         [
@@ -53,27 +53,11 @@ class UserCreateForm extends Model implements \app\models\ReturnMessageInterface
                 return true;
             }
         }
-        $this->setReturnMessage('error', 'Не удалось создать пользователя');
+        Yii::$app->session->setFlash('error userCreateForm', 'Не удалось создать пользователя');
         return false;
     }
     public function attributeLabels()
     {
         return User::$attributeLabels;
-    }
-
-    public function setReturnMessage($code, $message)
-    {
-        $this->returnMessageCode = $code;
-        $this->returnMessage = $message;
-    }
-
-    public function getReturnMessageCode()
-    {
-        return $this->returnMessageCode;
-    }
-
-    public function getReturnMessage()
-    {
-        return $this->returnMessage;
     }
 }

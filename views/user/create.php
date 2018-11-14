@@ -16,8 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php Pjax::begin(['enablePushState' => false]); ?>
-    <?= Alert::echoAlertFromReturnMessage($userCreateForm) ?>
+	<?php Pjax::begin(['enablePushState' => false]); ?>
+	
+	<?= Alert::widget(['tag' => 'userCreateForm']) ?>
 
     <?php $form = ActiveForm::begin(['type' => ActiveForm::TYPE_HORIZONTAL,]); ?>
 

@@ -14,16 +14,16 @@ $this->title = 'Мой профиль';
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <?php Pjax::begin(['enablePushState' => false]); ?>
-    <?= Alert::echoAlertFromReturnMessage($userInfoForm) ?>
+	<?php Pjax::begin(['enablePushState' => false]); ?>
+	<?= Alert::widget(['tag' => 'userInfoForm']) ?>
     <?= $this->render('_userInfoForm', [
         'userInfoForm' => $userInfoForm,
     ]) ?>
     <?php Pjax::end(); ?>
 
 
-    <?php Pjax::begin(['enablePushState' => false]); ?>
-    <?= Alert::echoAlertFromReturnMessage($userNewPassForm) ?>
+	<?php Pjax::begin(['enablePushState' => false]); ?>
+	<?= Alert::widget(['tag' => 'passwordForm']) ?>
     <?= $this->render('_userNewPassForm', [
         'userNewPassForm' => $userNewPassForm,
     ]) ?>

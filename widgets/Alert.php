@@ -29,6 +29,9 @@ class Alert extends \yii\bootstrap4\Widget
         'info' => 'alert-info',
         'warning' => 'alert-warning'
     ];
+    
+    public $tag = 'common';
+
     /**
      * @var array the options for rendering the close button tag.
      * Array will be passed to [[\yii\bootstrap\Alert::closeButton]].
@@ -46,8 +49,16 @@ class Alert extends \yii\bootstrap4\Widget
         $appendClass = isset($this->options['class']) ? ' ' . $this->options['class'] : '';
 
         foreach ($flashes as $type => $flash) {
-            if (!isset(self::$alertTypes[$type])) {
-                continue;
+            if ($this->tag == 'common') {
+                if (!isset(self::$alertTypes[$type])) {
+                    continue;
+                }
+            } else {
+                $nameParts = explode(" ", $type);
+                if (!isset($nameParts[0]) || !isset($nameParts[1]) || !isset(self::$alertTypes[$nameParts[0]]) || $nameParts[1] != $this->tag) {
+                    continue;
+				}
+				$type = $nameParts[0];
             }
 
             foreach ((array)$flash as $i => $message) {
@@ -62,23 +73,6 @@ class Alert extends \yii\bootstrap4\Widget
             }
 
             $session->removeFlash($type);
-        }
-    }
-
-    public static function echoAlert($alertCode, $alertMessage)
-    {
-        return \yii\bootstrap4\Alert::widget([
-            'options' => [
-                'class' => self::$alertTypes[$alertCode],
-            ],
-            'body' => $alertMessage,
-        ]);
-    }
-
-    public static function echoAlertFromReturnMessage(\app\models\ReturnMessageInterface $returnMessage)
-    {
-        if ($returnMessage->getReturnMessageCode()) {
-            return self::echoAlert($returnMessage->getReturnMessageCode(), $returnMessage->getReturnMessage());
         }
     }
 }

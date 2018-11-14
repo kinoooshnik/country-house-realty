@@ -98,7 +98,6 @@ class UserController extends Controller
         $userCreateForm = new UserCreateForm($newUser);
         if ($userCreateForm->load(Yii::$app->request->post())) {
             if ($userCreateForm->save()) {
-                Yii::$app->session->setFlash($userCreateForm->getReturnMessageCode(), $userCreateForm->getReturnMessage());
                 return $this->redirect(['admin']);
             }
         }
@@ -121,7 +120,7 @@ class UserController extends Controller
             $userNewPassForm->save();
         }
 
-        return $this->render('profile', [
+        return $this->render('update', [
             'userModel' => $userModel,
             'userInfoForm' => $userInfoForm,
             'userNewPassForm' => $userNewPassForm,

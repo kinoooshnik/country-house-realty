@@ -6,7 +6,7 @@ use Yii;
 use yii\base\Model;
 use app\models\User;
 
-class UserInfoForm extends Model implements \app\models\ReturnMessageInterface
+class UserInfoForm extends Model
 {
     public $email;
     public $first_name;
@@ -52,32 +52,16 @@ class UserInfoForm extends Model implements \app\models\ReturnMessageInterface
             $this->_userModel->second_name = $this->second_name;
 
             if ($this->_userModel->save()) {
-                $this->setReturnMessage('success', 'Данные успешно обнавлены');
+                 Yii::$app->session->setFlash('success userInfoForm', 'Данные успешно обнавлены');
                 return true;
             }
         }
-        $this->setReturnMessage('error', 'Не удалось обновить данные');
+         Yii::$app->session->setFlash('error userInfoForm', 'Не удалось обновить данные');
         return false;
     }
 
     public function attributeLabels()
     {
         return User::$attributeLabels;
-    }
-
-    public function setReturnMessage($code, $message)
-    {
-        $this->returnMessageCode = $code;
-        $this->returnMessage = $message;
-    }
-
-    public function getReturnMessageCode()
-    {
-        return $this->returnMessageCode;
-    }
-
-    public function getReturnMessage()
-    {
-        return $this->returnMessage;
     }
 }

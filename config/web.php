@@ -56,6 +56,26 @@ $config = [
                 '' => 'property/index',
             ],
         ],
+        'assetManager' => [
+            'class' => 'yii\web\AssetManager',
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'js' => [
+                        'jquery.min.js'
+                    ]
+                ],
+                'yii\bootstrap4\BootstrapAsset' => [
+                    'css' => [
+                        'css/bootstrap.min.css',
+                    ]
+                ],
+                'yii\bootstrap4\BootstrapPluginAsset' => [
+                    'js' => [
+                        'js/bootstrap.min.js',
+                    ]
+                ]
+            ]
+        ],
     ],
     'params' => $params,
     'modules' => [

@@ -6,7 +6,7 @@ use Yii;
 use yii\base\Model;
 use app\models\User;
 
-class UserNewPassForm extends Model implements \app\models\ReturnMessageInterface
+class UserNewPassForm extends Model
 {
     public $password;
 //    public $password_repeat;
@@ -16,7 +16,7 @@ class UserNewPassForm extends Model implements \app\models\ReturnMessageInterfac
     private $returnMessageCode = null;
     private $returnMessage = null;
 
-    function __construct(User $userModel, array $config = [])
+    public function __construct(User $userModel, array $config = [])
     {
         $this->_userModel = $userModel;
         parent::__construct($config);
@@ -36,18 +36,20 @@ class UserNewPassForm extends Model implements \app\models\ReturnMessageInterfac
             $this->_userModel->setNewPassword($this->password);
 
             if ($this->_userModel->save()) {
-                $this->setReturnMessage('success',
+                Yii::$app->session->setFlash(
+                     'success passwordForm',
                     strtr(
                         'Пароль успешно изменен.<br> Новые данные для входа:<br>Логин: {login}<br>Пароль: {password}',
                         [
                             '{login}' => $this->_userModel->email,
                             '{password}' => $this->password,
-                        ])
+                        ]
+                    )
                 );
                 return true;
             }
         }
-        $this->setReturnMessage('error', 'Не удалось изменить пароль');
+        Yii::$app->session->setFlash('error passwordForm', 'Не удалось изменить пароль');
         return false;
     }
 
@@ -59,22 +61,5 @@ class UserNewPassForm extends Model implements \app\models\ReturnMessageInterfac
                 'password_repeat' => 'Повторите пароль',
             ]
         );
-    }
-
-    public function setReturnMessage($code, $message)
-    {
-        $this->returnMessageCode = $code;
-        $this->returnMessage = $message;
-    }
-
-    public function getReturnMessageCode()
-    {
-        return $this->returnMessageCode;
-    }
-
-
-    public function getReturnMessage()
-    {
-        return $this->returnMessage;
     }
 }

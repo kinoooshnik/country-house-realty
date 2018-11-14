@@ -3,6 +3,9 @@
 use yii\helpers\Html;
 use kartik\grid\GridView;
 use yii\widgets\Pjax;
+use app\assets\AdminAsset;
+
+AdminAsset::register($this);
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */

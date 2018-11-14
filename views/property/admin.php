@@ -2,7 +2,9 @@
 
 use yii\helpers\Html;
 use kartik\grid\GridView;
+use app\assets\AdminAsset;
 
+AdminAsset::register($this);
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PropertySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
