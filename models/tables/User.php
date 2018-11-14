@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\models\tables;
 
 use yii\base\Exception;
 use yii\db\ActiveRecord;

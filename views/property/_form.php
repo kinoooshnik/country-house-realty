@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\web\JsExpression;
-use app\models\Direction;
+use app\models\tables\Direction;
 use kartik\form\ActiveForm;
 use kartik\select2\Select2;
 use kartik\widgets\FileInput;

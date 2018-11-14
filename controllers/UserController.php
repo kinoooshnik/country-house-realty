@@ -2,15 +2,15 @@
 
 namespace app\controllers;
 
-use app\models\User;
-use app\models\UserCreateForm;
-use app\models\UserInfoForm;
-use app\models\UserNewPassForm;
+use app\models\tables\User;
+use app\models\forms\UserCreateForm;
+use app\models\forms\UserInfoForm;
+use app\models\forms\UserNewPassForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use app\models\LoginForm;
+use app\models\forms\LoginForm;
 use yii\data\ActiveDataProvider;
 
 class UserController extends Controller

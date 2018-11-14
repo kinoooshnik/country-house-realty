@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models;
+namespace app\models\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Property;
+use app\models\tables\Property;
 
 /**
  * PropertySearch represents the model behind the search form of `app\models\Property`.

@@ -3,7 +3,7 @@ namespace app\commands;
 
 use yii\console\Controller;
 use yii\console\ExitCode;
-use app\models\User;
+use app\models\tables\User;
 
 class UserController extends Controller
 {

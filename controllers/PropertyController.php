@@ -2,11 +2,11 @@
 
 namespace app\controllers;
 
-use app\models\Photo;
-use app\models\PropertyForm;
-use app\models\PropertySearch;
+use app\models\tables\Photo;
+use app\models\forms\PropertyForm;
+use app\models\search\PropertySearch;
 use Yii;
-use app\models\Property;
+use app\models\tables\Property;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

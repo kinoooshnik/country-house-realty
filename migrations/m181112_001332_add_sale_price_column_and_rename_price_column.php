@@ -1,7 +1,7 @@
 <?php
 
 use yii\db\Migration;
-use app\models\Property;
+use app\models\tables\Property;
 
 /**
  * Class m181112_001332_add_sale_price_column_and_rename_price_column

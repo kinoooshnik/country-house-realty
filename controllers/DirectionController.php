@@ -2,10 +2,10 @@
 
 namespace app\controllers;
 
-use app\models\DirectionForm;
+use app\models\forms\DirectionForm;
 use Yii;
-use app\models\Direction;
-use app\models\DirectionSearch;
+use app\models\tables\Direction;
+use app\models\search\DirectionSearch;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
