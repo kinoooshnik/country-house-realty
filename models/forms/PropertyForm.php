@@ -5,6 +5,11 @@ namespace app\models\forms;
 use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
+use app\models\tables\Photo;
+use app\models\tables\Property;
+use app\models\tables\PropertyFeatures;
+use app\models\tables\PropertyPhoto;
+use app\models\tables\PropertyPropertyFeatures;
 
 class PropertyForm extends Model
 {
