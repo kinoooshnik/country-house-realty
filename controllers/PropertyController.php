@@ -88,7 +88,7 @@ class PropertyController extends Controller
         
         $propertySearchModel = new PropertyListSearch();
         $propertyQuery = $propertySearchModel->search(Yii::$app->request->queryParams);
-        $propertyQuery->where(['is_archive' => false])->orderBy(['id' => SORT_DESC]);
+        $propertyQuery->andWhere(['is_archive' => false])->orderBy(['id' => SORT_DESC]);
             
         $properyCount = $propertyQuery->count();
         if ($properyCount < $itemsOnOnePage * ($page - 1)) {
@@ -101,6 +101,9 @@ class PropertyController extends Controller
         foreach ($properies as $property) {
             $propertyViews[] = new PropertyView($property);
         }
+        
+        // \Yii::debug(\yii\helpers\Json::encode(Yii::$app->request->queryParams, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
+        // \Yii::debug(\yii\helpers\Json::encode($propertySearchModel, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
         return $this->render('list', [
             'propertySearchModel' => $propertySearchModel,
             'propertyViews' => isset($propertyViews) ? $propertyViews : [],

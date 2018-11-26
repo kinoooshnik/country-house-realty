@@ -12,11 +12,11 @@ $this->title = 'County House - Элитная недвижимость в Мос
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="property-index">
-	<h1 class="mb-4 h2" style="text-align: center">Аренда и продажа элитной недвижимости в Москва и МО</h1>
+	<!-- <h1 class="mb-4 h2" style="text-align: center">Аренда и продажа элитной недвижимости в Москва и МО</h1> -->
 
-	<?php /* $this->render('_search', [
+	<?= $this->render('_search', [
         'model' => $propertySearchModel
-    ]);*/ ?>
+    ]); ?>
 
 	<?= $this->render('_cards', [
         'propertyViews' => $propertyViews,
@@ -27,14 +27,13 @@ $this->params['breadcrumbs'][] = $this->title;
 			<nav aria-label="...">
 				<ul class="pagination">
 					<li class="page-item<?= $nav['currentPage'] == 1 ? ' disabled' : '' ?>">
-						<a class="page-link" href="<?= Url::to(['', 'page' => $nav['currentPage'] - 1]) ?>"
-						 aria-label="Previous">
+						<a class="page-link" href="<?= Url::current(['page' => ($nav['currentPage'] - 1)]) ?>" aria-label="Previous">
 							<span aria-hidden="true">&laquo;</span>
 							<span class="sr-only">Previous</span>
 						</a>
 					</li>
 					<?php if ($nav['currentPage'] >= 3): ?>
-					<li class="page-item"><a class="page-link" href="<?= Url::to(['', 'page' => 1]) ?>"><?= 1 ?></a></li>
+					<li class="page-item"><a class="page-link" href="<?= Url::current(['page' => 1]) ?>"><?= 1 ?></a></li>
 					<?php endif;?>
 					<?php if ($nav['currentPage'] > 3): ?>
 					<li class="page-item disabled">
@@ -45,14 +44,14 @@ $this->params['breadcrumbs'][] = $this->title;
 					</li>
 					<?php endif;?>
 					<?php if ($nav['currentPage'] != 1): ?>
-					<li class="page-item"><a class="page-link" href="<?= Url::to(['', 'page' => $nav['currentPage'] - 1]) ?>"><?= $nav['currentPage'] - 1 ?></a></li>
+					<li class="page-item"><a class="page-link" href="<?= Url::current(['page' => $nav['currentPage'] - 1]) ?>"><?= $nav['currentPage'] - 1 ?></a></li>
 					<?php endif;?>
 					<li class="page-item active">
-						<a class="page-link" href="<?= Url::to(['', 'page' => $nav['currentPage']]) ?>"><?= $nav['currentPage'] ?><span
+						<a class="page-link" href="<?= Url::current(['page' => $nav['currentPage']]) ?>"><?= $nav['currentPage'] ?><span
 							 class="sr-only">(current)</span></a>
 					</li>
 					<?php if ($nav['currentPage'] != $nav['pageCount']): ?>
-					<li class="page-item"><a class="page-link" href="<?= Url::to(['', 'page' => $nav['currentPage'] + 1]) ?>"><?= $nav['currentPage'] + 1 ?></a></li>
+					<li class="page-item"><a class="page-link" href="<?= Url::current(['page' => $nav['currentPage'] + 1]) ?>"><?= $nav['currentPage'] + 1 ?></a></li>
 					<?php endif;?>
 					<?php if ($nav['currentPage'] + 2 < $nav['pageCount']): ?>
 					<li class="page-item disabled">
@@ -63,10 +62,10 @@ $this->params['breadcrumbs'][] = $this->title;
 					</li>
 					<?php endif;?>
 					<?php if ($nav['currentPage'] + 2 <= $nav['pageCount']): ?>
-					<li class="page-item"><a class="page-link" href="<?= Url::to(['', 'page' => $nav['pageCount']]) ?>"><?= $nav['pageCount'] ?></a></li>
+					<li class="page-item"><a class="page-link" href="<?= Url::current(['page' => $nav['pageCount']]) ?>"><?= $nav['pageCount'] ?></a></li>
 					<?php endif;?>
 					<li class="page-item<?= $nav['currentPage'] == $nav['pageCount'] ? ' disabled' : '' ?>">
-						<a class="page-link" href="<?= Url::to(['', 'page' => $nav['currentPage'] + 1]) ?>"
+						<a class="page-link" href="<?= Url::current(['page' => $nav['currentPage'] + 1]) ?>"
 						 aria-label="Next">
 							<span aria-hidden="true">&raquo;</span>
 							<span class="sr-only">Next</span>
