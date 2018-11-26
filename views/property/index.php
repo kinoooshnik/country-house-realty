@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 	<div class="container mb-4">
 		<div class="row justify-content-center">
-			<a href="#" class="btn btn-primary btn-lg mx-auto" role="button">Посмотреть все</a>
+			<a href="<?= Url::to(['/property'])?>" class="btn btn-primary btn-lg mx-auto" role="button">Посмотреть все</a>
 		</div>
 	</div>
 
