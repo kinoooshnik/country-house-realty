@@ -253,7 +253,7 @@ class PropertyForm extends Model
         return array_merge(
             Property::$attributeLabels,
             [
-                'ad_type' => 'Тип объявления',
+                'ad_type' => 'Тип публикации',
                 'property_features' => 'Особенности',
                 'imageFiles' => 'Загрузить фото',
                 'photos_sequence' => 'Фото',

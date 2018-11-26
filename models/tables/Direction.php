@@ -50,5 +50,13 @@ class Direction extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return self::$attributeLabels;
+	}
+	
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getProperties()
+    {
+        return $this->hasMany(Property::className(), ['direction_id' => 'id']);
     }
 }

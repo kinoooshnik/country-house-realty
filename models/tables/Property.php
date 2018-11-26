@@ -18,8 +18,8 @@ use yii\db\Query;
  * @property boolean $is_sale
  * @property boolean $is_rent
  * @property string $currency
- * @property int $price_sale
- * @property int $price_rent
+ * @property int $sale_price
+ * @property int $rent_price
  * @property string $address
  * @property double $map_latitude
  * @property double $map_longitude
@@ -51,11 +51,11 @@ class Property extends ActiveRecord
         'user_id' => 'User ID',
         'property_name' => 'Название',
         'property_slug' => 'Property Slug',
-        'property_type' => 'Тип',
+        'property_type' => 'Тип недвижимости',
         'is_sale' => 'Продажа',
         'is_rent' => 'Аренда',
         'direction_id' => 'Направление',
-        'distance_to_mrar' => 'Расстояние до МКАД',
+        'distance_to_mrar' => 'Расстояние до МКАД км.',
         'with_finishing' => 'Тип отделки',
         'with_furniture' => 'Наличее мебели',
         'currency' => 'Валюта',
@@ -67,8 +67,8 @@ class Property extends ActiveRecord
         'bathrooms' => 'Санузлов',
         'bedrooms' => 'Спален',
         'garage' => 'Гаражей',
-        'land_area' => 'Площадь участка',
-        'build_area' => 'Жилая площадь',
+        'land_area' => 'Площадь участка сот.',
+        'build_area' => 'Жилая площадь м²',
         'description' => 'Описание',
         'is_archive' => 'В архиве',
         'created_at' => 'Создан',
@@ -150,7 +150,7 @@ class Property extends ActiveRecord
      */
     public function getPhotos()
     {
-        return $this->hasMany(Photo::className(), ['id' => 'photo_id'])->viaTable('property_photo', ['property_id' => 'id']);
+        return Photo::find()->leftJoin(PropertyPhoto::tableName(), 'photo_id=id')->where(['property_id' => $this->id])->orderBy('position');
     }
 
     /**

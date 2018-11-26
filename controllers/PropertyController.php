@@ -2,15 +2,18 @@
 
 namespace app\controllers;
 
-use app\models\tables\Photo;
 use app\models\forms\PropertyForm;
 use app\models\search\PropertySearch;
-use Yii;
+use app\models\search\PropertyListSearch;
+use app\models\tables\Direction;
+use app\models\tables\Photo;
 use app\models\tables\Property;
+use app\models\views\PropertyView;
+use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use yii\web\UploadedFile;
 
 /**
@@ -25,7 +28,7 @@ class PropertyController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['view', 'error', 'index'],
+                        'actions' => ['view', 'error', 'index', 'list'],
                         'allow' => true,
                     ],
                     [
@@ -54,7 +57,58 @@ class PropertyController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $direction = Direction::find()->where(['id' => [1, 2, 3, 4, 9, 15]])->limit(6)->all();
+        foreach ($direction as $key => $direction) {
+            $directionCards[$key] =
+                [
+                'direction' => $direction,
+                'photo' => $direction->getProperties()->orderBy(['id' => SORT_DESC])->limit(1)->one()->getMainPhoto()->one(),
+            ];
+        }
+
+        $properies = Property::find()->where(['is_archive' => false])->orderBy(['id' => SORT_DESC])->limit(6)->all();
+        foreach ($properies as $property) {
+            $propertyViews[] = new PropertyView($property);
+        }
+        return $this->render(
+            'index',
+            [
+                'directionCards' => isset($directionCards) ? $directionCards : [],
+                'propertyViews' => isset($propertyViews) ? $propertyViews : [],
+            ]
+        );
+    }
+
+    public function actionList($page = 1)
+    {
+        if ($page < 1) {
+            $page = 1;
+        }
+        $itemsOnOnePage = 15;
+        
+        $propertySearchModel = new PropertyListSearch();
+        $propertyQuery = $propertySearchModel->search(Yii::$app->request->queryParams);
+        $propertyQuery->where(['is_archive' => false])->orderBy(['id' => SORT_DESC]);
+            
+        $properyCount = $propertyQuery->count();
+        if ($properyCount < $itemsOnOnePage * ($page - 1)) {
+            $page = (int)($properyCount / $itemsOnOnePage);
+        }
+        $properyCount = (int)($properyCount / $itemsOnOnePage) + 1;
+
+        $propertyQuery->limit($itemsOnOnePage)->offset($itemsOnOnePage * ($page - 1));
+        $properies = $propertyQuery->all();
+        foreach ($properies as $property) {
+            $propertyViews[] = new PropertyView($property);
+        }
+        return $this->render('list', [
+            'propertySearchModel' => $propertySearchModel,
+            'propertyViews' => isset($propertyViews) ? $propertyViews : [],
+            'nav' => [
+                'currentPage' => $page,
+                'pageCount' => $properyCount
+            ],
+        ]);
     }
 
     /**
@@ -68,7 +122,7 @@ class PropertyController extends Controller
         $dataProvider->sort = [
             'defaultOrder' => [
                 'id' => SORT_DESC,
-            ]
+            ],
         ];
 
         return $this->render('admin', [
@@ -100,8 +154,8 @@ class PropertyController extends Controller
             if ($propertyForm->save() && $propertyForm->upload()) {
                 return $this->redirect(['update', 'id' => $newProperty->id]);
             } else {
-				Yii::$app->session->setFlash('danger', implode('<br>', Json::encode($propertyForm->getErrorSummary(true), JSON_PRETTY_PRINT)));
-			 }
+                Yii::$app->session->setFlash('danger', implode('<br>', Json::encode($propertyForm->getErrorSummary(true), JSON_PRETTY_PRINT)));
+            }
         }
 //        \Yii::debug(\yii\helpers\Json::encode($propertyForm, JSON_PRETTY_PRINT), __METHOD__);
         return $this->render('create', [
@@ -125,7 +179,7 @@ class PropertyController extends Controller
             if ($propertyForm->save() && $propertyForm->upload()) {
                 return $this->redirect(['update', 'id' => $propertyModel->id]);
             } else {
-               Yii::$app->session->setFlash('danger', implode('<br>', Json::encode($propertyForm->getErrorSummary(true), JSON_PRETTY_PRINT)));
+                Yii::$app->session->setFlash('danger', implode('<br>', Json::encode($propertyForm->getErrorSummary(true), JSON_PRETTY_PRINT)));
             }
         }
 

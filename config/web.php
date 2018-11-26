@@ -11,7 +11,8 @@ $config = [
     'bootstrap' => ['log'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+		'@npm'   => '@vendor/npm-asset',
+		'@propertyOpiginalPhotoUploadDir' => '/uploads/property/original',
     ],
     'components' => [
         'request' => [
@@ -53,7 +54,12 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                '' => 'property/index',
+				'' => 'property/index',
+				[
+					'pattern' => 'property/<page:\d+>',
+					'route' => 'property/list',
+					'defaults' => ['page' => 1],
+				],
             ],
         ],
         'assetManager' => [
@@ -75,7 +81,7 @@ $config = [
                     ]
                 ]
             ]
-        ],
+		],
     ],
     'params' => $params,
     'modules' => [
