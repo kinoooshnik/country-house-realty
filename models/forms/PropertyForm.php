@@ -217,7 +217,7 @@ class PropertyForm extends Model
     {
         if ($this->validate()) {
             foreach ($this->imageFiles as $file) {
-                $photoName = $this->_propertyModel->property_slug . '-' . Yii::$app->security->generateRandomString(6) . $file->extension;
+                $photoName = $this->_propertyModel->property_slug . '-' . Yii::$app->security->generateRandomString(6) . '.' . $file->extension;
                 $uploadDir = Yii::getAlias('@app') . '/web/uploads/property/original';
                 if ($file->saveAs($uploadDir . '/' . $photoName)) {
                     $photoModel = new Photo();
