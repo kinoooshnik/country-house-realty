@@ -61,9 +61,9 @@ class PropertyController extends Controller
         foreach ($direction as $key => $direction) {
             $directionCards[$key] =
                 [
-                'direction' => $direction,
-                'photo' => $direction->getProperties()->orderBy(['id' => SORT_DESC])->limit(1)->one()->getMainPhoto()->one(),
-            ];
+                    'direction' => $direction,
+                    'photo' => $direction->getProperties()->orderBy(['id' => SORT_DESC])->limit(1)->one()->getMainPhoto()->one(),
+                ];
         }
 
         $properies = Property::find()->where(['is_archive' => false])->orderBy(['id' => SORT_DESC])->limit(6)->all();
@@ -85,11 +85,11 @@ class PropertyController extends Controller
             $page = 1;
         }
         $itemsOnOnePage = 15;
-        
+
         $propertySearchModel = new PropertyListSearch();
         $propertyQuery = $propertySearchModel->search(Yii::$app->request->queryParams);
         $propertyQuery->andWhere(['is_archive' => false])->orderBy(['id' => SORT_DESC]);
-            
+
         $properyCount = $propertyQuery->count();
         if ($properyCount < $itemsOnOnePage * ($page - 1)) {
             $page = (int)($properyCount / $itemsOnOnePage);
@@ -101,7 +101,7 @@ class PropertyController extends Controller
         foreach ($properies as $property) {
             $propertyViews[] = new PropertyView($property);
         }
-        
+
         // \Yii::debug(\yii\helpers\Json::encode(Yii::$app->request->queryParams, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
         // \Yii::debug(\yii\helpers\Json::encode($propertySearchModel, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
         return $this->render('list', [
@@ -248,5 +248,18 @@ class PropertyController extends Controller
             }
         }
         return $this->redirect(['update', 'id' => $projectId, '#' => 'propertyform-photos_sequence-sortable']);
+    }
+
+    public function actionRenamePhoto()
+    {
+        $photoModels = Photo::find()->where(['not like', 'name', '%.jpg', false])->all();
+        $s = '';
+        foreach ($photoModels as $photoModel) {
+            $s .= $photoModel->id . ' ' . $photoModel->name . '<br>';
+            rename(Yii::getAlias('@app') . '/web/uploads/property/original/' . $photoModel->name, Yii::getAlias('@app') . '/web/uploads/property/original/' . substr($photoModel->name, 0, -3) . '.jpg');
+            $photoModel->name = substr($photoModel->name, 0, -3) . '.jpg';
+            $photoModel->save();
+        }
+        return count($photoModels) . '<br>' . $s;
     }
 }

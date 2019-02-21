@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		<div class="card-body d-flex">
 			<h4 class="card-title text-white align-items-center">
 				<?= $card['direction']->name?>
-				</h5>
+				</h4>
 		</div>
 	</div>
 	<?= $key == 2 || $key == 5 ? '</div>' : '' ?>
