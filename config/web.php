@@ -17,7 +17,7 @@ $config = [
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'yOaPmXLENQGV7Rg5brD9XlyulshJ4N66',
+            'cookieValidationKey' => $params['cookieValidationKey'],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -55,7 +55,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
 				'' => 'property/index',
-                'property/<action:(admin|create|error|update)>' => 'property/<action>',
+                'property/<action:(admin|create|error|update|send-object-to-archive|restore-object-to-archive)>' => 'property/<action>',
 				[
 					'pattern' => 'property/<page:\d+>',
 					'route' => 'property/list',

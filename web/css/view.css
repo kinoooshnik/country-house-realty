@@ -1,0 +1,160 @@
+div.news-detail {
+    word-wrap: break-word;
+}
+
+div.news-detail img.detail_picture {
+    float: left;
+    margin: 0 8px 6px 1px;
+}
+
+.news-date-time {
+    color: #486DAA;
+}
+
+.bg-image-full {
+    margin-top: -1rem;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    height: 550px;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+}
+
+.bg-image-footer {
+    background-color: white;
+    height: 300px;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+}
+
+.on-blur-bg {
+    position: relative;
+    top: -20px;
+    margin: 50px 0 50px 0;
+    height: 400px;
+    padding: 0 !important;
+}
+
+.currencies {
+    height: 2.3rem;
+}
+.card-description {
+    margin: 0 !important;
+    border: 0 !important;
+}
+.card-description img {
+    width: 4rem;
+    margin: 1rem auto 1rem auto;
+}
+.card-description .card-body {
+    padding: 0 !important;
+}
+
+/*slider css*/
+#gallery-t-group {
+    width: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.rsDefaultInv,
+.rsDefaultInv .rsOverflow,
+.rsDefaultInv .rsSlide,
+.rsDefaultInv .rsVideoFrameHolder,
+.rsDefaultInv .rsThumbs {
+    background: transparent;
+}
+
+.rsTmb {
+    object-fit: cover;
+}
+
+#gallery-t-group .rsThumb {
+    float: left;
+    overflow: hidden;
+    width: 100px;
+    height: 75px;
+}
+
+#gallery-t-group .rsThumbs {
+    width: 305px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    padding: 0 0 0 1px;
+    right: 0;
+}
+
+#gallery-t-group .rsGCaption {
+    right: 305px;
+    line-height: 12px;
+    padding: 1px 7px;
+    font-size: 11px;
+    background: #EEE;
+    position: absolute;
+    width: auto;
+    bottom: 0;
+    float: none;
+    text-align: left;
+}
+
+#page-navigation {
+    display: none;
+}
+
+#gallery-t-group #slider-counter {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    color: white;
+    background-color: RGBA(0, 0, 0, 0.4);
+    padding: 2px 5px 0 5px;
+    border-radius: 4px;
+    z-index: 5;
+}
+
+@media screen and (min-width: 0px) and (max-width: 1200px) {
+    #gallery-t-group .rsThumbs {
+        width: 228px;
+    }
+
+    #gallery-t-group .rsGCaption {
+        right: 228px;
+    }
+}
+
+@media screen and (min-width: 0px) and (max-width: 760px) {
+
+    .on-blur-bg {
+        margin-top: -1rem;
+        margin-bottom: unset;
+        height: unset;
+    }
+
+    #gallery-t-group .rsNav {
+        display: none;
+    }
+
+    #gallery-t-group .rsThumbs {
+        left: 0;
+        position: relative;
+        height: auto;
+    }
+
+    #gallery-t-group .rsThumbsContainer {
+        height: auto !important;
+    }
+
+    #gallery-t-group .rsGCaption {
+        right: 0;
+    }
+
+}

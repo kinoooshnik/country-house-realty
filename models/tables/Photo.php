@@ -79,4 +79,12 @@ class Photo extends ActiveRecord
     {
         return $this->hasMany(Property::className(), ['id' => 'property_id'])->viaTable('property_photo', ['photo_id' => 'id']);
     }
+
+    public function getPath(){
+        return Yii::getAlias('@propertyOpiginalPhotoUploadDir/') . $this->name;
+    }
+
+    public function getPathToSmall(){
+        return $this->getPath();
+    }
 }

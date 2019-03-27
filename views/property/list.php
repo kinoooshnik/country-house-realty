@@ -1,6 +1,5 @@
 <?php
 
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
@@ -8,7 +7,7 @@ use yii\helpers\Url;
 /* @var $propertySearchModel app\models\search\PropertyListSearch */
 /* @var $nav array */
 
-$this->title = 'County House - Элитная недвижимость в Москве и МО';
+$this->title = 'Список недвижимости | County House - Элитная недвижимость в Москве и МО';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="property-index">
@@ -23,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     ]) ?>
 
 	<div class="container px-0">
-		<div class="d-flex flex-row">
+		<div class="d-flex justify-content-center">
 			<nav aria-label="...">
 				<ul class="pagination">
 					<li class="page-item<?= $nav['currentPage'] == 1 ? ' disabled' : '' ?>">

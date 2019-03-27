@@ -14,7 +14,7 @@ while (count($propertyViews) % 3 != 0) {
         <?php if ($propertyView != null): ?>
             <?php $url = Url::to(['/property/view', 'slug' => $propertyView->property_slug]); ?>
             <a href="<?= $url ?>"><img class="card-img-top"
-                                       src="<?= Yii::getAlias('@propertyOpiginalPhotoUploadDir/') . $propertyView->photos[0]['photoPath'] ?>"
+                                       src="<?= $propertyView->photos[0]['photoPath'] ?>"
                                        alt="<?= $propertyView->property_name ?>"></a>
             <div class="card-body">
                 <h5 class="card-title"><a href="<?= $url ?>">

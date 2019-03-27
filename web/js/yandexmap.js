@@ -2,10 +2,13 @@ ymaps.ready(init);
 if (typeof lat === 'undefined') {
     var lat = 0,
         lon = 0,
+        zoom = 11,
+        respondToClick = false,
         latInputId = null,
         lonInputId = null,
         addressInputId = null;
 }
+
 function init() {
     var coords = [lat, lon];
     var center;
@@ -16,7 +19,7 @@ function init() {
     }
     var myMap = new ymaps.Map("map", {
         center: center,
-        zoom: 11
+        zoom: zoom
     });
 
     var point = new ymaps.Placemark(coords, {}, {
@@ -25,17 +28,19 @@ function init() {
     });
     myMap.geoObjects.add(point);
     getAddress(coords);
-    myMap.events.add('click', function (e) {
-        var coords = e.get('coords');
-        point.geometry.setCoordinates([coords[0], coords[1]]);
-        if(latInputId != null) {
-            document.getElementById(latInputId).value = coords[0];
-        }
-        if(lonInputId != null) {
-            document.getElementById(lonInputId).value = coords[1];
-        }
-        getAddress(coords, addressInputId);
-    });
+    if (respondToClick) {
+        myMap.events.add('click', function (e) {
+            var coords = e.get('coords');
+            point.geometry.setCoordinates([coords[0], coords[1]]);
+            if (latInputId != null) {
+                document.getElementById(latInputId).value = coords[0];
+            }
+            if (lonInputId != null) {
+                document.getElementById(lonInputId).value = coords[1];
+            }
+            getAddress(coords, addressInputId);
+        });
+    }
 
     function getAddress(coords, inputElemId = null) {
         point.properties.set('iconCaption', 'поиск...');

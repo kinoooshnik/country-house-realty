@@ -143,8 +143,27 @@ class PropertyController extends Controller
     public function actionView($slug)
     {
         return $this->render('view', [
-            'model' => $this->findModelBySlug($slug),
+            'property' => new PropertyView($this->findModelBySlug($slug)),
+            'otherPropertyViews' => PropertyView::getPropertyViews(Property::find()->orderBy('RAND()')->limit(6)->all()),
         ]);
+    }
+
+    public function actionRestoreObjectToArchive($id)
+    {
+        $property = $this->findModel($id);
+        $property->is_archive = false;
+        $property->save();
+
+        return $this->redirect(['view', 'slug' => $property->property_slug]);
+    }
+
+    public function actionSendObjectToArchive($id)
+    {
+        $property = $this->findModel($id);
+        $property->is_archive = true;
+        $property->save();
+
+        return $this->redirect(['view', 'slug' => $property->property_slug]);
     }
 
     public function actionCreate()

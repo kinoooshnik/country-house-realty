@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'build_area',
             //'description:ntext',
             //'property_features',
-            //'is_archive',
+            'is_archive:boolean',
             //'created_at',
             //'updated_at',
             [
