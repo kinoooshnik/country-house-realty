@@ -55,11 +55,16 @@ $config = [
             'showScriptName' => false,
             'rules' => [
 				'' => 'property/index',
+                'property/<action:(admin|create|error|update)>' => 'property/<action>',
 				[
 					'pattern' => 'property/<page:\d+>',
 					'route' => 'property/list',
 					'defaults' => ['page' => 1],
 				],
+                [
+                    'pattern' => 'property/<slug>',
+                    'route' => 'property/view',
+                ],
             ],
         ],
         'assetManager' => [

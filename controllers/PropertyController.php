@@ -140,10 +140,10 @@ class PropertyController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
+    public function actionView($slug)
     {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $this->findModelBySlug($slug),
         ]);
     }
 
@@ -217,7 +217,14 @@ class PropertyController extends Controller
         if (($model = Property::findOne($id)) !== null) {
             return $model;
         }
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
 
+    protected function findModelBySlug($slug)
+    {
+        if (($model = Property::findOne(['property_slug' => $slug])) !== null) {
+            return $model;
+        }
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
