@@ -130,6 +130,7 @@ use kartik\sortinput\SortableInput;
     ]) ?>
 
     <div class="form-group">
+        <?= Html::a('Назад', ['/property/admin'], ['class' => 'btn btn-success']); ?>
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
