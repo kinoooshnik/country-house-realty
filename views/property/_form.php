@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\JsExpression;
 use app\models\tables\Direction;
 use kartik\form\ActiveForm;
@@ -11,9 +12,10 @@ use kartik\sortinput\SortableInput;
 /* @var $this yii\web\View */
 /* @var $propertyForm app\models\PropertyForm */
 /* @var $form yii\widgets\ActiveForm */
+
+$this->registerJsFile('https://api-maps.yandex.ru/2.1/?apikey=2e51a010-e7ba-425a-a479-b8dd42b367fa&lang=ru_RU', ['position' => yii\web\View::POS_HEAD]);
 ?>
 <div class="property-form">
-
     <?php $form = ActiveForm::begin([
         'type' => ActiveForm::TYPE_HORIZONTAL,
     ]); ?>
@@ -26,15 +28,31 @@ use kartik\sortinput\SortableInput;
 
     <?= $form->field($propertyForm, 'currency')->radioButtonGroup(['₽' => '₽', '$' => '$', '€' => '€']); ?>
 
-	<?= $form->field($propertyForm, 'sale_price')->textInput() ?>
-	
-	<?= $form->field($propertyForm, 'rent_price')->textInput() ?>
+    <?= $form->field($propertyForm, 'sale_price')->textInput() ?>
+
+    <?= $form->field($propertyForm, 'rent_price')->textInput() ?>
+
+    <script type="text/javascript">
+        <?php $this->registerJsFile(Url::to(['/js/yamapedit.js']), ['position' => yii\web\View::POS_END])?>
+        if (typeof lat === 'undefined') {
+            var lat, lon, latInputId, lonInputId, addressInputId;
+        }
+        lat = <?=$propertyForm->map_latitude == null ? 0 : $propertyForm->map_latitude?>;
+        lon = <?=$propertyForm->map_longitude == null ? 0 : $propertyForm->map_longitude?>;
+        latInputId = '<?= Html::getInputId($propertyForm, 'map_latitude')?>';
+        lonInputId = '<?= Html::getInputId($propertyForm, 'map_longitude')?>';
+        addressInputId = '<?= Html::getInputId($propertyForm, 'address')?>';
+    </script>
+
+    <p>Выберете точку на карте или введите данные самостоятельно</p>
+
+    <div id="map" class="mb-3" style="height: 400px"></div>
 
     <?= $form->field($propertyForm, 'address')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($propertyForm, 'map_latitude')->textInput() ?>
+    <?= $lat = $form->field($propertyForm, 'map_latitude')->textInput() ?>
 
-    <?= $form->field($propertyForm, 'map_longitude')->textInput() ?>
+    <?= $lon = $form->field($propertyForm, 'map_longitude')->textInput() ?>
 
     <?php $directionName = empty($propertyForm->direction_id) ? '' : Direction::findOne($propertyForm->direction_id)->name;
     echo $form->field($propertyForm, 'direction_id')->widget(Select2::classname(), [

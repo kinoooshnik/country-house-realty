@@ -60,10 +60,11 @@ class PropertyForm extends Model
     public function rules()
     {
         return [
-            [['property_name', 'property_type', 'ad_type', 'currency', 'address'], 'required'],
+            [['property_name', 'property_type', 'ad_type', 'currency', 'address', 'map_latitude', 'map_longitude'], 'required'],
             [['id', 'direction_id', 'distance_to_mrar', 'sale_price', 'rent_price'], 'integer'],
             [['address', 'property_type', 'currency', 'bathrooms', 'bedrooms', 'garage', 'description', 'photos_sequence'], 'string'],
-            [['map_latitude', 'map_longitude', 'land_area', 'build_area'], 'number'],
+            [['land_area', 'build_area'], 'number'],
+            [['map_latitude', 'map_longitude'], 'double'],
             [['property_name'], 'string', 'max' => 255],
             [['is_archive'], 'boolean'],
             ['property_type', 'in', 'range' => ['Дом', 'Таунхаус', 'Квартира', 'Участок']],
@@ -84,21 +85,21 @@ class PropertyForm extends Model
     {
         $success = false;
         if ($this->validate()) {
-			if ($this->with_finishing == '🛇') {
-				$this->with_finishing = null;
-			}
-			if ($this->with_furniture == '🛇') {
-				$this->with_furniture = null;
-			}
-			if ($this->bathrooms == '🛇') {
-				$this->bathrooms = null;
-			}
-			if ($this->bedrooms == '🛇') {
-				$this->bedrooms = null;
-			}
-			if ($this->garage == '🛇') {
-				$this->garage = null;
-			}
+            if ($this->with_finishing == '🛇') {
+                $this->with_finishing = null;
+            }
+            if ($this->with_furniture == '🛇') {
+                $this->with_furniture = null;
+            }
+            if ($this->bathrooms == '🛇') {
+                $this->bathrooms = null;
+            }
+            if ($this->bedrooms == '🛇') {
+                $this->bedrooms = null;
+            }
+            if ($this->garage == '🛇') {
+                $this->garage = null;
+            }
             $this->_propertyModel->property_name = $this->property_name;
             $this->_propertyModel->property_type = $this->property_type;
             if (is_array($this->ad_type)) {
@@ -126,9 +127,9 @@ class PropertyForm extends Model
             if ($this->_propertyModel->isNewRecord) {
                 if ($this->_propertyModel->save()) {
                     Yii::$app->session->setFlash(
-                         'success',
+                        'success',
                         strtr('Объект "{nameToShow}" создан.', ['{nameToShow}' => $this->property_name,])
-                     );
+                    );
                     $success = true;
                 } else {
                     Yii::$app->session->setFlash('error', 'Не удалось создать объект');
@@ -136,15 +137,15 @@ class PropertyForm extends Model
                 }
             } elseif ($this->_propertyModel->save()) {
                 Yii::$app->session->setFlash(
-                     'success',
+                    'success',
                     strtr('Объект "{nameToShow}" успешно изменен.', ['{nameToShow}' => $this->property_name,])
-                 );
+                );
                 $success = true;
             } else {
                 Yii::$app->session->setFlash('error', 'Не удалось изменить объект');
                 $success = false;
             }
-            
+
             //Ососбенности
             if ($success && is_array($this->property_features)) {
                 $propertyFeaturesExist = $this->_propertyModel->getPropertyFeatures()->all();
@@ -204,13 +205,13 @@ class PropertyForm extends Model
         \Yii::debug(\yii\helpers\Json::encode($this->_propertyModel, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
         return $success;
     }
-    
+
     public function getErrorSummary($showAllErrors)
     {
         if (empty(parent::getErrorSummary($showAllErrors))) {
-			return $this->_propertyModel->getErrorSummary($showAllErrors);
-		}
-		return parent::getErrorSummary($showAllErrors);
+            return $this->_propertyModel->getErrorSummary($showAllErrors);
+        }
+        return parent::getErrorSummary($showAllErrors);
     }
 
     public function upload()
