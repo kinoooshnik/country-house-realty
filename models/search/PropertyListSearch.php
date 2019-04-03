@@ -57,7 +57,7 @@ class PropertyListSearch extends Model
             ]
         );
     }
-    
+
     /**
      * @param array $params
      *
@@ -66,7 +66,7 @@ class PropertyListSearch extends Model
     public function search($params)
     {
         $query = Property::find();
-        
+
         if (isset($params['PropertyListSearch'])) {
             $this->load($params);
             if (!empty($this->property_type)) {
@@ -86,25 +86,25 @@ class PropertyListSearch extends Model
                         $priceFrom = intval(preg_replace('/\s+/u', '', $this->price_from));
                         $priceTo = intval(preg_replace('/\s+/u', '', $this->price_to));
                         $query->andWhere([
-                        'or',
-                        ['between', 'sale_price', $priceFrom, $priceTo],
-                        ['between', 'rent_price', $priceFrom, $priceTo]
-                    ]);
+                            'or',
+                            ['between', 'sale_price', $priceFrom, $priceTo],
+                            ['between', 'rent_price', $priceFrom, $priceTo]
+                        ]);
                     } elseif (!empty($this->price_from)) {
                         $priceFrom = intval(preg_replace('/\s+/u', '', $this->price_from));
                         $query->andWhere([
-                        'or',
-                        ['>', 'sale_price', $priceFrom],
-                        ['>', 'rent_price', $priceFrom]
-                    ]);
+                            'or',
+                            ['>', 'sale_price', $priceFrom],
+                            ['>', 'rent_price', $priceFrom]
+                        ]);
                         $query->andWhere(['>', 'sale_price', intval(preg_replace('/\s+/u', '', $this->price_from))]);
                     } elseif (!empty($this->price_to)) {
                         $priceTo = intval(preg_replace('/\s+/u', '', $this->price_to));
                         $query->andWhere([
-                        'or',
-                        ['<', 'sale_price', $priceTo],
-                        ['<', 'rent_price', $priceTo]
-                    ]);
+                            'or',
+                            ['<', 'sale_price', $priceTo],
+                            ['<', 'rent_price', $priceTo]
+                        ]);
                     }
                 } else {
                     $rubUsd = 66.19;
@@ -115,51 +115,51 @@ class PropertyListSearch extends Model
                             $secondCurrency = '$';
                             $secondFactor = 1 / $rubUsd;
                             $thirdCurrency = '€';
-                            $thirdFactor = $rubEur;
+                            $thirdFactor = 1 / $rubEur;
                             break;
                         case '$':
                             $secondCurrency = '₽';
                             $secondFactor = $rubUsd;
                             $thirdCurrency = '€';
-                            $thirdFactor = $rubEur / $rubUsd;
+                            $thirdFactor = $rubUsd / $rubEur;
                             break;
                         case '€':
                             $secondCurrency = '₽';
                             $secondFactor = $rubEur;
                             $thirdCurrency = '$';
-                            $thirdFactor = $rubUsd / $rubEur;
+                            $thirdFactor = $rubEur / $rubUsd;
                             break;
                     }
                     if (!empty($this->price_from)) {
                         $priceFrom = intval(preg_replace('/\s+/u', '', $this->price_from));
-						$thirdPriceFrom = intval($priceFrom*$thirdFactor);
-						$secondPriceFrom = intval($priceFrom*$secondFactor);
+                        $secondPriceFrom = intval($priceFrom * $secondFactor);
+                        $thirdPriceFrom = intval($priceFrom * $thirdFactor);
                     }
                     if (!empty($this->price_to)) {
                         $priceTo = intval(preg_replace('/\s+/u', '', $this->price_to));
-						$secondPriceTo = intval($priceTo*$secondFactor);
-						$thirdPriceTo = intval($priceTo*$thirdFactor);
+                        $secondPriceTo = intval($priceTo * $secondFactor);
+                        $thirdPriceTo = intval($priceTo * $thirdFactor);
                     }
-				
+
                     if (!empty($this->price_from) && !empty($this->price_to)) {
                         $query->andWhere([
                             'or',
                             [
                                 'and',
                                 ['=', 'currency', $this->currency],
-                                ['or', ['between', 'sale_price', $priceFrom, $priceTo],['between', 'rent_price', $priceFrom, $priceTo]]
+                                ['or', ['between', 'sale_price', $priceFrom, $priceTo], ['between', 'rent_price', $priceFrom, $priceTo]]
                             ],
                             [
                                 'or',
                                 [
                                     'and',
                                     ['=', 'currency', $secondCurrency],
-                                    ['or', ['between', 'sale_price', $secondPriceFrom, $secondPriceTo],['between', 'rent_price', $secondPriceFrom, $secondPriceTo]]
+                                    ['or', ['between', 'sale_price', $secondPriceFrom, $secondPriceTo], ['between', 'rent_price', $secondPriceFrom, $secondPriceTo]]
                                 ],
                                 [
                                     'and',
                                     ['=', 'currency', $thirdCurrency],
-                                    ['or', ['between', 'sale_price', $thirdPriceFrom, $thirdPriceTo],['between', 'rent_price', $thirdPriceFrom, $thirdPriceTo]]
+                                    ['or', ['between', 'sale_price', $thirdPriceFrom, $thirdPriceTo], ['between', 'rent_price', $thirdPriceFrom, $thirdPriceTo]]
                                 ]
                             ]
                         ]);
@@ -176,12 +176,12 @@ class PropertyListSearch extends Model
                                 [
                                     'and',
                                     ['=', 'currency', $secondCurrency],
-                                    ['or', ['>', 'sale_price', $secondPriceFrom],['>', 'rent_price', $secondPriceFrom]]
+                                    ['or', ['>', 'sale_price', $secondPriceFrom], ['>', 'rent_price', $secondPriceFrom]]
                                 ],
                                 [
                                     'and',
                                     ['=', 'currency', $thirdCurrency],
-                                    ['or', ['>', 'sale_price', $thirdPriceFrom],['>', 'rent_price', $thirdPriceFrom]]
+                                    ['or', ['>', 'sale_price', $thirdPriceFrom], ['>', 'rent_price', $thirdPriceFrom]]
                                 ]
                             ]
                         ]);
@@ -198,12 +198,12 @@ class PropertyListSearch extends Model
                                 [
                                     'and',
                                     ['=', 'currency', $secondCurrency],
-                                    ['or', ['<', 'sale_price', $secondPriceTo],['<', 'rent_price', $secondPriceTo]]
+                                    ['or', ['<', 'sale_price', $secondPriceTo], ['<', 'rent_price', $secondPriceTo]]
                                 ],
                                 [
                                     'and',
                                     ['=', 'currency', $thirdCurrency],
-                                    ['or', ['<', 'sale_price', $thirdPriceTo],['<', 'rent_price', $thirdPriceTo]]
+                                    ['or', ['<', 'sale_price', $thirdPriceTo], ['<', 'rent_price', $thirdPriceTo]]
                                 ]
                             ]
                         ]);
@@ -211,7 +211,7 @@ class PropertyListSearch extends Model
                 }
             }
         }
-    
+
         return $query;
     }
 }
