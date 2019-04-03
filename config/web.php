@@ -55,7 +55,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
 				'' => 'property/index',
-                'property/<action:(admin|create|error|update|send-object-to-archive|restore-object-to-archive)>' => 'property/<action>',
+                'property/<action:(admin|create|error|update|send-object-to-archive|restore-object-to-archive|recovery-data)>' => 'property/<action>',
 				[
 					'pattern' => 'property/<page:\d+>',
 					'route' => 'property/list',

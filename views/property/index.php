@@ -15,10 +15,10 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php foreach ($directionCards as $key => $card): ?>
 	<?= $key == 0 || $key == 3 ? '<div class="card-deck">' : '' ?>
 	<div class="card mb-3 card-text-overlay d-flex justify-content-center">
-		<img class="card-img-top" src="<?= Yii::getAlias('@propertyOpiginalPhotoUploadDir/') . $card['photo']->name ?>" alt="Card image cap">
+		<img class="card-img-top" src="<?= $card['photo'] != null ? Yii::getAlias('@propertyOpiginalPhotoUploadDir/') . $card['photo']->name : ''?>" alt="Card image cap">
 		<div class="card-body d-flex">
 			<h4 class="card-title text-white align-items-center">
-				<?= $card['direction']->name?>
+				<?= $card['direction'] != null ? $card['direction']->name : ''?>
 				</h4>
 		</div>
 	</div>
