@@ -163,6 +163,9 @@ a.desc:after {
 .direction-card-img {
     height: 100%;
 }
+.select2-search__field {
+    width: 100% !important;
+}
 
 @media (max-width: 576px) {
     .display-4 {
