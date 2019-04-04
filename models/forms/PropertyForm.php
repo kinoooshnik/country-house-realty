@@ -60,7 +60,7 @@ class PropertyForm extends Model
     public function rules()
     {
         return [
-            [['property_name', 'property_type', 'ad_type', 'currency', 'address', 'map_latitude', 'map_longitude'], 'required'],
+            [['property_name', 'property_type', 'ad_type', 'currency', 'address', 'map_latitude', 'map_longitude', 'direction_id'], 'required'],
             [['id', 'direction_id', 'distance_to_mrar', 'sale_price', 'rent_price'], 'integer'],
             [['address', 'property_type', 'currency', 'bathrooms', 'bedrooms', 'garage', 'description', 'photos_sequence'], 'string'],
             [['land_area', 'build_area'], 'number'],
