@@ -40,7 +40,7 @@ use yii\db\Query;
  *
  * @property Direction $direction
  * @property PropertyPhoto[] $propertyPhotos
- * @property Photo[] $photos
+ * @property Photo[] $photosw
  * @property PropertyPropertyFeatures[] $propertyPropertyFeatures
  * @property PropertyFeatures[] $propertyFeatures
  */
@@ -66,7 +66,7 @@ class Property extends ActiveRecord
         'map_longitude' => 'Долгота',
         'bathrooms' => 'Санузлов',
         'bedrooms' => 'Спален',
-        'garage' => 'Гаражей',
+        'garage' => 'Количество мест для машин',
         'land_area' => 'Площадь участка сот.',
         'build_area' => 'Жилая площадь м²',
         'description' => 'Описание',

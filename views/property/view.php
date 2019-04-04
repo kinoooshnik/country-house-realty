@@ -26,9 +26,12 @@ $this->params['breadcrumbs'][] = $this->title;
      style="background-image: url('<?= isset($property->photos[0]) ? $property->photos[0]['photoPath'] : '' ?>'); margin-top: -45px;"></div>
 <div class="d-block mx-auto container on-blur-bg">
     <div id="gallery-t-group" class="royalSlider rsDefaultInv">
-        <?php foreach ($property->photos as $photo): ?>
-            <a class="rsImg" href="<?= $photo['photoPath'] ?>"><img alt="<?=$property->property_name?>" class="rsTmb" src="<?= $photo['photoPath'] ?>"/></a>
-        <?php endforeach; ?>
+        <?php if (is_array($property->photos)): ?>
+            <?php foreach ($property->photos as $photo): ?>
+                <a class="rsImg" href="<?= $photo['photoPath'] ?>"><img alt="<?= $property->property_name ?>"
+                                                                        class="rsTmb" src="<?= $photo['photoPath'] ?>"/></a>
+            <?php endforeach; ?>
+        <? endif; ?>
     </div>
 </div>
 <div id="slider-counter">1/6</div>
@@ -225,22 +228,22 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
         </div>
 
-        <?php if(!empty($property->map_latitude) && !empty($property->map_longitude)):?>
-        <script type="text/javascript">
-            <?php $this->registerJsFile(Url::to(['/js/yandexmap.js']), ['position' => yii\web\View::POS_END])?>
-            if (typeof lat === 'undefined') {
-                var lat, lon, zoom, respondToClick, latInputId, lonInputId, addressInputId;
-            }
-            lat = <?=$property->map_latitude == null ? 0 : $property->map_latitude?>;
-            lon = <?=$property->map_longitude == null ? 0 : $property->map_longitude?>;
-            zoom = 13;
-            respondToClick = false;
-            latInputId = null;
-            lonInputId = null;
-            addressInputId = null;
-        </script>
-        <div id="map" class="mb-3" style="height: 400px"></div>
-        <?php endif;?>
+        <?php if (!empty($property->map_latitude) && !empty($property->map_longitude)): ?>
+            <script type="text/javascript">
+                <?php $this->registerJsFile(Url::to(['/js/yandexmap.js']), ['position' => yii\web\View::POS_END])?>
+                if (typeof lat === 'undefined') {
+                    var lat, lon, zoom, respondToClick, latInputId, lonInputId, addressInputId;
+                }
+                lat = <?=$property->map_latitude == null ? 0 : $property->map_latitude?>;
+                lon = <?=$property->map_longitude == null ? 0 : $property->map_longitude?>;
+                zoom = 13;
+                respondToClick = false;
+                latInputId = null;
+                lonInputId = null;
+                addressInputId = null;
+            </script>
+            <div id="map" class="mb-3" style="height: 400px"></div>
+        <?php endif; ?>
 
         <h2 class="mb-4 mt-4 text-center">Другие варианты</h2>
         <?= $this->render('_cards', [

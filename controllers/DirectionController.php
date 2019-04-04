@@ -21,6 +21,10 @@ class DirectionController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
+                        'actions' => ['index'],
+                        'allow' => true,
+                    ],
+                    [
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -35,14 +39,37 @@ class DirectionController extends Controller
         ];
     }
 
-    public function actionIndex()
+    public function actionAdmin()
     {
         $searchModel = new DirectionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
+        return $this->render('admin', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionIndex()
+    {
+        $directionCards = [];
+        $directionSortIndexes = [1, 3, 2, 17, 9, 4, 15, 16, 10, 5, 6, 7, 8, 11, 12, 13, 14];
+        $directions = Direction::find()->all();
+        foreach ($directionSortIndexes as $index) {
+            $direction = $directions[$index - 1];
+            $photo = $direction->getProperties()->orderBy(['id' => SORT_DESC])->limit(1)->one();
+            if (isset($photo)) {
+                $photo = $photo->getMainPhoto()->one();
+                $directionCards[] =
+                    [
+                        'direction' => $direction,
+                        'photo' => $photo,
+                    ];
+            }
+        }
+
+        return $this->render('index', [
+            'directionCards' => $directionCards,
         ]);
     }
 

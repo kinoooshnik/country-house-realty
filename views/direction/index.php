@@ -1,39 +1,21 @@
 <?php
 
-use yii\helpers\Html;
-use kartik\grid\GridView;
-use app\assets\AdminAsset;
-
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\DirectionSearch */
-/* @var $dataProvider yii\data\ActiveDataProvider */
+/* @var $directionCards array */
 
-AdminAsset::register($this);
-$this->title = 'Направления';
+$this->title = 'Направления | County House - Элитная недвижимость в Москве и МО';
 $this->params['breadcrumbs'][] = $this->title;
-?>
-<div class="direction-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+use yii\helpers\Url; ?>
+<div class="property-index">
+    <h2 class="mb-4" style="text-align: center">Все напрвления</h2>
+    <?= $this->render('_cards', [
+        'directionCards' => $directionCards,
+    ]) ?>
 
-    <p>
-        <?= Html::a('Назад', ['/property/admin'], ['class' => 'btn btn-success']); ?>
-        <?= Html::a('Добавить направление', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?= GridView::widget([
-        'pjax'=>true,
-        'responsiveWrap' => false,
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            'id',
-            'name',
-            'slug',
-            [
-                'class' => kartik\grid\ActionColumn::className(),
-                'template' => '{update} {delete}',
-            ],
-        ],
-    ]); ?>
+    <div class="container mb-4">
+        <div class="row justify-content-center">
+            <a href="<?= Url::to('\\') ?>" class="btn btn-primary btn-lg mx-auto" role="button">На главную</a>
+        </div>
+    </div>
 </div>

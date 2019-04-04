@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 
 /* @var $this yii\web\View */
-/* @var $propertyViews app\models\views\PropertyView */
+/* @var $propertyViews[] app\models\views\PropertyView */
 while (count($propertyViews) % 3 != 0) {
     $propertyViews[] = null;
 }

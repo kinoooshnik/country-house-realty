@@ -95,26 +95,38 @@ class PropertyController extends Controller
         $propertyQuery = $propertySearchModel->search(Yii::$app->request->queryParams);
         $propertyQuery->andWhere(['is_archive' => false])->orderBy(['id' => SORT_DESC]);
 
-        $properyCount = $propertyQuery->count();
-        if ($properyCount < $itemsOnOnePage * ($page - 1)) {
-            $page = (int)($properyCount / $itemsOnOnePage);
+        $propertyCount = $propertyQuery->count();
+        if ($propertyCount < $itemsOnOnePage * ($page - 1)) {
+            $page = (int)($propertyCount / $itemsOnOnePage);
         }
-        $properyCount = (int)($properyCount / $itemsOnOnePage) + 1;
+        $propertyPageCount = (int)($propertyCount / $itemsOnOnePage) + 1;
 
         $propertyQuery->limit($itemsOnOnePage)->offset($itemsOnOnePage * ($page - 1));
-        $properies = $propertyQuery->all();
-        foreach ($properies as $property) {
+        $properties = $propertyQuery->all();
+        $propertyViews = [];
+        foreach ($properties as $property) {
             $propertyViews[] = new PropertyView($property);
+        }
+
+        $directionList = [];
+        $data = (new \yii\db\Query())
+            ->select('id, name')
+            ->from('direction')
+            ->all();
+        foreach ($data as $direction) {
+            $directionList[$direction['id']] = $direction['name'];
         }
 
         // \Yii::debug(\yii\helpers\Json::encode(Yii::$app->request->queryParams, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
         // \Yii::debug(\yii\helpers\Json::encode($propertySearchModel, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
         return $this->render('list', [
             'propertySearchModel' => $propertySearchModel,
-            'propertyViews' => isset($propertyViews) ? $propertyViews : [],
+            'directionList' => $directionList,
+            'propertyViews' => $propertyViews,
+            'propertyCount' => $propertyCount,
             'nav' => [
                 'currentPage' => $page,
-                'pageCount' => $properyCount
+                'pageCount' => $propertyPageCount
             ],
         ]);
     }
@@ -151,6 +163,11 @@ class PropertyController extends Controller
             'property' => new PropertyView($this->findModelBySlug($slug)),
             'otherPropertyViews' => PropertyView::getPropertyViews(Property::find()->orderBy('RAND()')->limit(6)->all()),
         ]);
+    }
+
+    public function actionViewById($id)
+    {
+        return $this->redirect(['view', 'slug' => $this->findModel($id)->property_slug]);
     }
 
     public function actionRestoreObjectToArchive($id)

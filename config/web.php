@@ -55,7 +55,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
 				'' => 'property/index',
-                'property/<action:(admin|create|error|update|send-object-to-archive|restore-object-to-archive|recovery-data)>' => 'property/<action>',
+                'property/<action:(admin|create|error|update|delete|send-object-to-archive|restore-object-to-archive|recovery-data)>' => 'property/<action>',
 				[
 					'pattern' => 'property/<page:\d+>',
 					'route' => 'property/list',
@@ -65,6 +65,11 @@ $config = [
                     'pattern' => 'property/<slug>',
                     'route' => 'property/view',
                 ],
+                [
+                    'pattern' => 'property/id/<id:\d+>',
+                    'route' => 'property/view-by-id',
+                ],
+                'direction' => 'direction/index',
             ],
         ],
         'assetManager' => [
