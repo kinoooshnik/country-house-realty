@@ -9,7 +9,7 @@ use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\bootstrap4\Nav;
 use yii\bootstrap4\NavBar;
-use yii\widgets\Breadcrumbs;
+use yii\helpers\Url;
 
 AppAsset::register($this);
 $this->registerJsFile('/js/popper.min.js', []);
@@ -131,7 +131,45 @@ PropertyListSearch%5Bbathrooms%5D=';
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; Country House <?= date('Y') ?></p>
+        <div class="row">
+            <div class="col">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="<?= Url::to(['/property', 'PropertyListSearch[ad_type][]' => 'Аренда', 'PropertyListSearch[direction_id][]' => 17]) ?>">Аренда
+                            город</a></li>
+                    <li>
+                        <a href="<?= Url::to(['/property', 'PropertyListSearch[ad_type][]' => 'Продажа', 'PropertyListSearch[direction_id][]' => 17]) ?>">Продажа
+                            город</a></li>
+                    <li><a href="<?= Url::to($outOfCityUrl) ?>">Аренда загород</a></li>
+                    <li>
+                        <a href="<?= Url::to(str_replace('%D0%90%D1%80%D0%B5%D0%BD%D0%B4%D0%B0', '%D0%9F%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B0', $outOfCityUrl)) ?>">Продажа
+                            загород</a></li>
+                    <li><a href="<?= Url::to(['/direction']) ?>">Направления</a></li>
+                    <li><a href="<?= Url::to(['/contacts/find']) ?>">Подобрать объект</a></li>
+                    <li><a href="<?= Url::to(['/contacts/ask']) ?>">Задать вопрос</a></li>
+                </ul>
+            </div>
+            <div class="col">
+                <ul class="list-unstyled">
+                    <li><a href="<?= Url::to(['/to-owners']) ?>">Владельцам</a></li>
+                    <li><a href="<?= Url::to(['/design']) ?>">Строительство и дизайн</a></li>
+                    <li><a href="<?= Url::to(['/advices']) ?>">Советы эксперта</a></li>
+                    <li><a href="<?= Url::to(['/articles']) ?>">Статьи</a></li>
+                    <li><a href="<?= Url::to(['/about']) ?>">О Нас</a></li>
+                    <li><a href="<?= Url::to(['/contact']) ?>">Контакты</a></li>
+                </ul>
+            </div>
+            <div class="col center-block text-center">
+                <ul class="list-unstyled text-decoration-none">
+                    <li class="h5">Оставайтесь на связи</li>
+                    <li><a href="tel:+79039615031" class="h5 tel">+7 903 961 50 31</a></li>
+                    <li><a href="tel:+79261660277" class="h5 tel">+7 926 166 02 77</a></li>
+                    <li><a href="tel:+79167301777" class="h5 tel">+7 916 730 17 77</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="pull-left">&copy; Country House Realty <?= date('Y') ?></p>
     </div>
 </footer>
 
