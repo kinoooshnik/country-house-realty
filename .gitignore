@@ -36,3 +36,4 @@ phpunit.phar
 items.php
 rules.php
 .vscode/sftp.json
+Будет удалено .gitignore

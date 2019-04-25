@@ -24,6 +24,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
 		'js/my.js',
+		'js/metrika.js',
     ];
     public $depends = [
         // 'yii\web\YiiAsset',
