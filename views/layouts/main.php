@@ -41,8 +41,10 @@ $this->registerJsFile('/js/popper.min.js', []);
     ?>
     <div class="col center-block">
         <ul class="list-unstyled text-decoration-none tels">
-            <li><a href="tel:<?=Yii::$app->params['phones'][0]?>" class="h6 tel"><?=Yii::$app->params['phones'][0]?></a></li>
-            <li><a href="tel:<?=Yii::$app->params['phones'][1]?>" class="h6 tel"><?=Yii::$app->params['phones'][1]?></a></li>
+            <li><a href="tel:<?= Yii::$app->params['phones'][0] ?>"
+                   class="h6 tel"><?= Yii::$app->params['phones'][0] ?></a></li>
+            <li><a href="tel:<?= Yii::$app->params['phones'][1] ?>"
+                   class="h6 tel"><?= Yii::$app->params['phones'][1] ?></a></li>
         </ul>
     </div>
     <?php
@@ -135,12 +137,19 @@ $this->registerJsFile('/js/popper.min.js', []);
                     <li><a href="<?= Url::to(['/contact']) ?>">Контакты</a></li>
                 </ul>
             </div>
-            <div class="col center-block text-center">
+            <div class="col center-block contacts">
                 <ul class="list-unstyled text-decoration-none">
-                    <li class="h5">Оставайтесь на связи</li>
+                    <li class="h5" style="border-left: none;">Оставайтесь на связи</li>
                     <?php foreach (Yii::$app->params['phones'] as $phone): ?>
-                        <li><a href="tel:<?= $phone ?>" class="h5 tel"><?= $phone ?></a></li>
+                        <li>
+                            <i><object type="image/svg+xml" data="<?= Url::to(['/img/phone.svg']) ?>" width="22" height="22"></object></i>
+                            <a href="tel:<?= $phone ?>" class="h5 tel"><?= $phone ?></a>
+                        </li>
                     <?php endforeach; ?>
+                    <li>
+                        <i><object type="image/svg+xml" data="<?= Url::to(['/img/map-pin.svg']) ?>" width="22" height="22"></object></i>
+                        <div class="h5"><?= Yii::$app->params['address'] ?></div>
+                    </li>
                 </ul>
             </div>
         </div>

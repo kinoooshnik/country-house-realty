@@ -30,8 +30,25 @@ body {
     text-decoration: none;
 }
 
+.footer li {
+    line-height: 30px;
+}
+
 .footer .tel {
     color: #007bff;
+}
+.footer .contacts li i {
+    position: absolute;
+    left: -40px;
+    top: 5px;
+    font-size: 1.2em;
+}
+.footer .contacts li {
+    border-left: 1px solid darkgray;
+    margin-left: 50px;
+    padding-left: 25px;
+    position: relative;
+    line-height: 40px;
 }
 
 .navbar .tels {
