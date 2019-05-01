@@ -148,7 +148,7 @@ $this->registerJsFile('/js/popper.min.js', []);
                     <?php endforeach; ?>
                     <li>
                         <i><object type="image/svg+xml" data="<?= Url::to(['/img/map-pin.svg']) ?>" width="22" height="22"></object></i>
-                        <div class="h5"><?= Yii::$app->params['address'] ?></div>
+                        <div class="h5"><?= Yii::$app->params['address']['full'] ?></div>
                     </li>
                 </ul>
             </div>
