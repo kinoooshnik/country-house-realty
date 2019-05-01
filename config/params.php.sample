@@ -4,4 +4,5 @@ return [
     'bsVersion' => '4.x',
     'yandexMapToken' => '',
     'cookieValidationKey' => '',
+    'yandexMetrika' => '',
 ];

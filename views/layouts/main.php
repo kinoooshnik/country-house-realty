@@ -24,7 +24,7 @@ $this->registerJsFile('/js/popper.min.js', []);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-
+    <?= Yii::$app->params['yandexMetrika']?>
 </head>
 <body>
 <?php $this->beginBody() ?>
