@@ -5,6 +5,17 @@ namespace app\widgets;
 use yii\base\Widget;
 use yii\helpers\Url;
 
+/**
+ * Article widget renders a title of article on a blur background image.
+ *
+ * How to use:
+ *
+ * ```php
+ * Article::begin(['image' => ['/img/background.jpg'], 'title' => 'My title']);
+ * //Your article text.
+ * Article::end();
+ * ```
+ */
 class Article extends Widget
 {
     public $image;
