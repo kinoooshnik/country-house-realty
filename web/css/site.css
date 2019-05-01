@@ -13,6 +13,43 @@ body {
     padding: 70px 15px 20px;
 }
 
+.article .title {
+    padding: 14px 24px;
+    border-radius: .3rem;
+    color: #000;
+    background-color: #FFF;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.article .bg-image-full {
+    background: no-repeat center center scroll;
+    background-size: 150%;
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+    height: 400px;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+    margin-top: -100px;
+}
+
+.article .bg-image-footer {
+    background-color: white;
+    height: 300px;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+}
+
+.article .on-blur-bg {
+    position: relative;
+    top: -20px;
+    margin: 50px 0 50px 0;
+    padding: 0 !important;
+}
+
 .footer {
     background-color: #ebebeb;
     border-top: 1px solid #ddd;
@@ -34,16 +71,22 @@ body {
     line-height: 30px;
 }
 
+.tel {
+    white-space: pre;
+}
+
 .footer .tel {
     color: #007bff;
 }
-.footer .contacts li i {
+
+.contacts li i {
     position: absolute;
     left: -40px;
     top: 5px;
     font-size: 1.2em;
 }
-.footer .contacts li {
+
+.contacts li {
     border-left: 1px solid darkgray;
     margin-left: 50px;
     padding-left: 25px;
