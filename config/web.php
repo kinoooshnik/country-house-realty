@@ -70,6 +70,7 @@ $config = [
                     'route' => 'property/view-by-id',
                 ],
                 'direction' => 'direction/index',
+                'contact' => 'article/contact',
             ],
         ],
         'assetManager' => [
