@@ -179,6 +179,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php endforeach; ?>
 
                 <hr>
+                <div class="d-flex flex-row mt-2 mb-2">
+                    <div class="flex-fill">ID:</div>
+                    <div><?= $property->id?></div>
+                </div>
                 <?php if (!empty($property->distance_to_mrar)): ?>
                     <div class="d-flex flex-row mt-2 mb-2">
                         <div class="flex-fill">Расстояние до МКАД:</div>
