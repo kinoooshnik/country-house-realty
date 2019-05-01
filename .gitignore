@@ -35,5 +35,5 @@ phpunit.phar
 /.vagrant
 items.php
 rules.php
-.vscode/sftp.json
+.vscode
 Будет удалено .gitignore
