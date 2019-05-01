@@ -215,6 +215,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div><?= $property->garage ?></div>
                     </div>
                 <?php endif; ?>
+                <div class="d-flex flex-row mt-2 mb-2">
+                    <?= Html::a('Позворить агенту: ' . Yii::$app->params['phones'][$property->id % 2], 'tel:' . Yii::$app->params['phones'][$property->id % 2], ['class' => 'btn btn-primary btn-block']) ?>
+                </div>
                 <?php if (!Yii::$app->user->isGuest): ?>
                     <?= Html::a('Изменить', ['update', 'id' => $property->id], ['class' => 'btn btn-primary btn-block']) ?>
                     <?
