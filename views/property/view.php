@@ -43,12 +43,11 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-8 mb-5">
                 <?php
                 if ($property->is_archive) {
-                    echo \yii\bootstrap4\Alert::widget([
-                        'body' => 'Этот объект находится в архиве.',
-                        'options' => [
-                            'class' => 'alert-danger',
-                        ],
-                    ]);
+                    ?>
+                    <div class="alert alert-danger">
+                        Этот объект находится в архиве.
+                    </div>
+                <?php
                 }
                 ?>
                 <h1>
@@ -220,7 +219,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     </div>
                 <?php endif; ?>
                 <div class="d-flex flex-row mt-2 mb-2">
-                    <?= Html::a('Позворить агенту: ' . Yii::$app->params['phones'][$property->id % 2], 'tel:' . Yii::$app->params['phones'][$property->id % 2], ['class' => 'btn btn-primary btn-block']) ?>
+                    <?= Html::a('Позворить агенту: <nobr>' . Yii::$app->params['phones'][$property->id % 2], 'tel:' . Yii::$app->params['phones'][$property->id % 2] . '</nobr>', ['class' => 'btn btn-primary btn-block']) ?>
                 </div>
                 <?php if (!Yii::$app->user->isGuest): ?>
                     <?= Html::a('Изменить', ['update', 'id' => $property->id], ['class' => 'btn btn-primary btn-block']) ?>
