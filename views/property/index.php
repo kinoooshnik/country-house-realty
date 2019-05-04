@@ -11,7 +11,7 @@ $this->title = 'County House - Элитная недвижимость в Мос
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="property-index">
-    <h2 class="mb-4" style="text-align: center">Популярные напрвления</h2>
+    <h2 class="mb-4" style="text-align: center">Популярные направления</h2>
     <?= $this->render('//direction/_cards', [
         'directionCards' => $directionCards,
     ]) ?>
