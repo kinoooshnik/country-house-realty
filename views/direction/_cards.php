@@ -11,7 +11,7 @@ use yii\helpers\Url;
          onclick="location.href='<?= Url::to(['/property', 'PropertyListSearch[direction_id][]' => $card['direction']->id]) ?>
                  ';" style="cursor:pointer">
         <img class="card-img-top direction-card-img"
-             src="<?= isset($card['photo']) ? Yii::getAlias('@propertyOpiginalPhotoUploadDir/') . $card['photo']->name : '' ?>"
+             src="<?= isset($card['photo']) ? $card['photo']->name : '' ?>"
              alt="<?= $card['direction']->name ?>">
         <div class="card-body d-flex">
             <h4 class="card-title text-white align-items-center">
