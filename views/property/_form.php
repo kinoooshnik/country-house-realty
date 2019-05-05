@@ -123,7 +123,7 @@ $this->registerJsFile('https://api-maps.yandex.ru/2.1/?apikey=' . \Yii::$app->pa
         $items = [];
         foreach ($propertyForm->photos as $key => $photo) {
             $items[$key] = ['content' =>
-                Html::img("/uploads/property/original/$photo", ['height' => 100]) .
+                Html::img($photo, ['height' => 100]) .
                 Html::beginTag('div', ['class' => 'photo-buttons']) .
                 Html::a('⮿', ['/property/delete-photo', 'photoId' => $key, 'projectId' => $propertyForm->id], [
                     'class' => 'btn btn-sm btn-danger',

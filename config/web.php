@@ -12,7 +12,7 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
 		'@npm'   => '@vendor/npm-asset',
-		'@propertyOpiginalPhotoUploadDir' => '/uploads/property/original',
+		'@uploadDir' => '/uploads',
     ],
     'components' => [
         'request' => [

@@ -198,7 +198,7 @@ class PropertyController extends Controller
             if ($propertyForm->save() && $propertyForm->upload()) {
                 return $this->redirect(['update', 'id' => $newProperty->id]);
             } else {
-                Yii::$app->session->setFlash('danger', implode('<br>', Json::encode($propertyForm->getErrorSummary(true), JSON_PRETTY_PRINT)));
+                Yii::$app->session->setFlash('danger', \yii\helpers\Json::encode($propertyForm->getErrorSummary(true), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
             }
         }
 //        \Yii::debug(\yii\helpers\Json::encode($propertyForm, JSON_PRETTY_PRINT), __METHOD__);
@@ -289,153 +289,12 @@ class PropertyController extends Controller
     {
         $photoModel = Photo::find()->where(['id' => $photoId])->limit(1)->one();
         if (!empty($photoModel)) {
-            if (unlink(Yii::getAlias('@app') . '/web/uploads/property/original/' . $photoModel->name)) {
+            if (unlink(Yii::getAlias('@app') . '/web' . $photoModel->getPath())) {
                 $photoModel->delete();
             } else {
                 Yii::$app->session->setFlash('error', 'Не удалось удалить фото');
             }
         }
         return $this->redirect(['update', 'id' => $projectId, '#' => 'propertyform-photos_sequence-sortable']);
-    }
-
-    public function actionRenamePhoto()
-    {
-        $photoModels = Photo::find()->where(['not like', 'name', '%.jpg', false])->all();
-        $s = '';
-        foreach ($photoModels as $photoModel) {
-            $s .= $photoModel->id . ' ' . $photoModel->name . '<br>';
-            rename(Yii::getAlias('@app') . '/web/uploads/property/original/' . $photoModel->name, Yii::getAlias('@app') . '/web/uploads/property/original/' . substr($photoModel->name, 0, -3) . '.jpg');
-            $photoModel->name = substr($photoModel->name, 0, -3) . '.jpg';
-            $photoModel->save();
-        }
-        return count($photoModels) . '<br>' . $s;
-    }
-
-    public function actionRecoveryData()
-    {
-        ini_set('max_execution_time', 300);
-        $data = (new \yii\db\Query())
-            ->select('id, name AS text')
-            ->from('direction')
-            ->limit(30);
-        $data = $data->all();
-        foreach (array_values($data) as $pair) {
-            $directions[$pair['id']] = $pair['text'];
-        }
-
-        $str = '';
-        $row = 0;
-        $obj = 0;
-        if (($handle = fopen(__DIR__ . "/export_file_GC3pZrjp6N41D3us.csv", "r")) !== FALSE) {
-            $property = new Property();
-            $photoArr = [];
-            while (($data = fgetcsv($handle, 5000, "~", '"', "\"")) !== FALSE) {
-                $row++;
-                if (count($data) < 20) {
-//                    echo $row . '<br>';
-//                    print_r($data);
-//                    echo '<br>';
-                    continue;
-                }
-                if ($property->property_name == $data[1]) {
-                    if (isset($data[32])) {
-                        $photoArr[] = $data[32];
-                    }
-                    continue;
-                }
-                $obj++;
-
-                $this->saveProperty($property, $photoArr);
-
-//                echo \yii\helpers\Json::encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) , '<br>';
-                $property = new Property();
-                $photoArr = [];
-                $property->property_name = $data[1];
-//                $property->property_slug = $data[12];
-                $property->property_type = $data[15];
-                $property->is_sale = $data[16] == 'Да' ? true : false;
-                $property->is_rent = $data[17] == 'Да' ? true : false;
-                $property->currency = $data[18];
-                $property->sale_price = isset($data[19]) ? intval($data[19]) : null;;
-                $property->rent_price = isset($data[20]) ? intval($data[20]) : null;;
-                $property->address = $data[21];
-                $map = explode(",", $data[22]);
-                if (count($map) == 2) {
-                    $property->map_latitude = floatval($map[0]);
-                    $property->map_longitude = floatval($map[1]);
-                }
-                $property->distance_to_mrar = intval($data[23]);
-                switch ($data[24]) {
-                    case 'С отделкой':
-                        $property->with_finishing = 1;
-                        break;
-                    case 'Без отделки':
-                        $property->with_finishing = 0;
-                        break;
-                }
-                switch ($data[25]) {
-                    case 'С мебелью':
-                        $property->with_furniture = 1;
-                        break;
-                    case 'Без мебели':
-                        $property->with_furniture = 0;
-                        break;
-                }
-                $property->bathrooms = isset($data[26]) ? $data[26] : null;
-                $property->bedrooms = isset($data[27]) ? $data[27] : null;
-                $property->garage = isset($data[28]) ? $data[28] : null;
-                $property->land_area = isset($data[29]) ? intval($data[29]) : null;
-                $property->build_area = isset($data[30]) ? intval($data[30]) : null;
-                $property->description = $data[31];
-                if (isset($data[32])) {
-                    $photoArr[] = $data[32];
-                }
-                $property->is_archive = false;
-                $property->direction_id = array_search($data[33], $directions);
-                $property->user_id = 1;
-//                echo print_r($property->validate()) . '<br>';
-            }
-            $this->saveProperty($property, $photoArr);
-            fclose($handle);
-        } else {
-            return 'Opening the file error.';
-        }
-        return $str;
-    }
-
-    private function saveProperty(Property $property, array $photoArr)
-    {
-        if ($property->validate()) {
-            $property->save();
-            foreach ($photoArr as $file) {
-                $fileExtension = explode(".", $file);
-                $fileExtension = $fileExtension[count($fileExtension) - 1];
-                $photoName = $property->property_slug . '-' . Yii::$app->security->generateRandomString(6) . '.' . $fileExtension;
-                $oldName = __DIR__ . substr($file, 7);
-                $newName = Yii::getAlias('@app') . '/web' . Yii::getAlias('@propertyOpiginalPhotoUploadDir') . '/' . $photoName;
-//                        echo $oldName . ' ' . $newName . '<br>';
-                if (strlen($file) > 5 && rename($oldName, $newName)) {
-                    $photoModel = new Photo();
-                    $photoModel->name = $photoName;
-                    if ($photoModel->save()) {
-                        $newPropertyPhotoModel = new PropertyPhoto();
-                        $newPropertyPhotoModel->property_id = $property->id;
-                        $newPropertyPhotoModel->photo_id = $photoModel->id;
-                        $maxPosition = PropertyPhoto::find()->max('position');
-                        $newPropertyPhotoModel->position = $maxPosition + 1;
-                        if (!$newPropertyPhotoModel->save()) {
-                            echo $newName . ' ' . $property->id . 'cannot join photo to property ' . print_r($newPropertyPhotoModel->getFirstErrors()) . '<br>';
-                        }
-                    } else {
-                        echo $newName . 'db record creating error' . print_r($photoModel->getFirstErrors()) . '<br>';
-                    }
-                } else {
-                    echo $oldName . ' ' . $newName . ' - renaming is failed<br>';
-                }
-            }
-        } else {
-            echo $property->property_name . ' ' . print_r($property->getErrors()) . " - not validate <br>";
-            echo \yii\helpers\Json::encode($property, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), '<br>';
-        }
     }
 }

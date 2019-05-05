@@ -5,6 +5,7 @@ namespace app\models\tables;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "photo".
@@ -18,6 +19,31 @@ use yii\db\ActiveRecord;
  */
 class Photo extends ActiveRecord
 {
+    /**
+     * @var UploadedFile
+     */
+    public $imageFile;
+
+    public function upload()
+    {
+        if ($this->validate()) {
+            $this->imageFile->saveAs(Yii::getAlias('@webroot') . $this->name);
+            $this->imageFile = null;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Generate name based imageFile name and extension
+     */
+    public function generateName()
+    {
+        if (isset($this->imageFile)) {
+            $this->name = Yii::getAlias('@uploadDir/') . $this->imageFile->baseName . '.' . $this->imageFile->extension;
+        }
+    }
 
     public function behaviors()
     {
@@ -49,6 +75,7 @@ class Photo extends ActiveRecord
             [['uploaded_at'], 'integer'],
             [['name'], 'string', 'max' => 255],
             [['name'], 'unique'],
+            [['imageFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg'],
         ];
     }
 
@@ -80,11 +107,13 @@ class Photo extends ActiveRecord
         return $this->hasMany(Property::className(), ['id' => 'property_id'])->viaTable('property_photo', ['photo_id' => 'id']);
     }
 
-    public function getPath(){
-        return Yii::getAlias('@propertyOpiginalPhotoUploadDir/') . $this->name;
+    public function getPath()
+    {
+        return $this->name;
     }
 
-    public function getPathToSmall(){
+    public function getPathToSmall()
+    {
         return $this->getPath();
     }
 }

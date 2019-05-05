@@ -6,7 +6,7 @@ use app\assets\AdminAsset;
 
 AdminAsset::register($this);
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\PropertySearch */
+/* @var $searchModel app\models\search\PropertySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Недвижимость';
@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Направления', '\direction\admin', ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
-        'responsiveWrap' => false,
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -30,7 +29,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'html',
                 'label' => 'Фото',
                 'value' => function ($model) {
-                    return Html::a(Html::img($model->getMainPhotoURL(), ['height'=>'75']), ['update', 'id' => $model->id]);
+                    $img = $model->getMainPhoto()->one();
+                    if (isset($img)) {
+                        $img = $img->getPath();
+                    } else {
+                        $img = '';
+                    }
+                    return Html::a(Html::img($img, ['height' => '75']), ['update', 'id' => $model->id]);
                 },
             ],
 

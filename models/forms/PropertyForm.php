@@ -201,8 +201,8 @@ class PropertyForm extends Model
         } else {
             Yii::$app->session->setFlash('error', 'Введены некорректные данные');
         }
-        \Yii::debug(\yii\helpers\Json::encode($this->getErrorSummary(true), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
-        \Yii::debug(\yii\helpers\Json::encode($this->_propertyModel, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
+        //\Yii::debug(\yii\helpers\Json::encode($this->getErrorSummary(true), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
+        //\Yii::debug(\yii\helpers\Json::encode($this->_propertyModel, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), __METHOD__);
         return $success;
     }
 
@@ -218,26 +218,51 @@ class PropertyForm extends Model
     {
         if ($this->validate()) {
             foreach ($this->imageFiles as $file) {
-                $photoName = $this->_propertyModel->property_slug . '-' . Yii::$app->security->generateRandomString(6) . '.' . $file->extension;
-                $uploadDir = Yii::getAlias('@app') . '/web/uploads/property/original';
-                if ($file->saveAs($uploadDir . '/' . $photoName)) {
-                    $photoModel = new Photo();
-                    $photoModel->name = $photoName;
-                    if ($photoModel->save()) {
-                        $newPropertyPhotoModel = new PropertyPhoto();
-                        $newPropertyPhotoModel->property_id = $this->_propertyModel->id;
-                        $newPropertyPhotoModel->photo_id = $photoModel->id;
-                        $maxPosition = PropertyPhoto::find()->max('position');
-                        $newPropertyPhotoModel->position = $maxPosition + 1;
-                        if (!$newPropertyPhotoModel->save()) {
-                            Yii::$app->session->setFlash('error', 'Не удалось присоединить фото ' . $photoName . ' к объекту.');
-                        }
-                    } else {
-                        Yii::$app->session->setFlash('error', 'Не удалось создать запись в БД о фото ' . $photoName . '.');
-                    }
-                } else {
-                    Yii::$app->session->setFlash('error', 'Не удалось загрузить фото ' . $file->baseName . '.' . $file->extension . '.');
+                $photoModel = new Photo();
+                $photoModel->imageFile = $file;
+                $photoModel->name = '/uploads/property/original/' . $this->_propertyModel->property_slug . '-' . Yii::$app->security->generateRandomString(6) . '.' . $file->extension;
+                if (!$photoModel->upload()) {
+                    Yii::$app->session->setFlash('error', 'Не удалось загрузить фото ' . $photoModel->name . '.');
+                    continue;
                 }
+                if (!$photoModel->save()) {
+                    Yii::$app->session->setFlash('error', 'Не удалось создать запись в БД о фото ' . $photoModel->name . '.<br>' . yii\helpers\Json::encode($photoModel->getErrors(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+                    continue;
+                }
+                $newPropertyPhotoModel = new PropertyPhoto();
+                $newPropertyPhotoModel->property_id = $this->_propertyModel->id;
+                $newPropertyPhotoModel->photo_id = $photoModel->id;
+                $maxPosition = PropertyPhoto::find()->where(['property_id' => $this->_propertyModel->id])->max('position');
+                if (!isset($maxPosition)) {
+                    $maxPosition = 0;
+                }
+                $newPropertyPhotoModel->position = $maxPosition + 1;
+                if (!$newPropertyPhotoModel->save()) {
+                    Yii::$app->session->setFlash('error', 'Не удалось присоединить фото ' . $photoModel->name . ' к объекту.');
+                }
+//                $uploadDir = Yii::getAlias('@app') . '/web/uploads/property/original';
+
+
+//                $photoName = $this->_propertyModel->property_slug . '-' . Yii::$app->security->generateRandomString(6) . '.' . $file->extension;
+//                $uploadDir = Yii::getAlias('@app') . '/web/uploads/property/original';
+//                if ($file->saveAs($uploadDir . '/' . $photoName)) {
+//                    $photoModel = new Photo();
+//                    $photoModel->name = $photoName;
+//                    if ($photoModel->save()) {
+//                        $newPropertyPhotoModel = new PropertyPhoto();
+//                        $newPropertyPhotoModel->property_id = $this->_propertyModel->id;
+//                        $newPropertyPhotoModel->photo_id = $photoModel->id;
+//                        $maxPosition = PropertyPhoto::find()->max('position');
+//                        $newPropertyPhotoModel->position = $maxPosition + 1;
+//                        if (!$newPropertyPhotoModel->save()) {
+//                            Yii::$app->session->setFlash('error', 'Не удалось присоединить фото ' . $photoName . ' к объекту.');
+//                        }
+//                    } else {
+//                        Yii::$app->session->setFlash('error', 'Не удалось создать запись в БД о фото ' . $photoName . '.<br>' . yii\helpers\Json::encode($photoModel->getErrors(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+//                    }
+//                } else {
+//                    Yii::$app->session->setFlash('error', 'Не удалось загрузить фото ' . $file->baseName . '.' . $file->extension . '.');
+//                }
             }
             if (count($this->imageFiles) != 0) {
                 Yii::$app->session->setFlash('success', 'Фото успешно загружены.');

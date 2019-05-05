@@ -102,7 +102,7 @@ class Property extends ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'property_name', 'property_type', 'currency', 'address'], 'required'],
+            [['user_id', 'property_name', 'property_slug', 'property_type', 'currency', 'address'], 'required'],
             [['user_id', 'direction_id', 'distance_to_mrar', 'sale_price', 'rent_price'], 'integer'],
             [['address', 'property_type', 'currency', 'bathrooms', 'bedrooms', 'garage', 'description'], 'string'],
             [['property_type', 'currency', 'bathrooms', 'bedrooms', 'garage', 'description'], 'default', 'value' => null],
@@ -159,15 +159,6 @@ class Property extends ActiveRecord
     public function getMainPhoto()
     {
         return Photo::find()->leftJoin(PropertyPhoto::tableName(), 'photo_id=id')->where(['property_id' => $this->id])->orderBy('position')->limit(1);
-    }
-
-    /**
-     * @return string
-     */
-    public function getMainPhotoURL()
-    {
-        $photoModel = $this->getMainPhoto()->one();
-        return empty($photoModel) ? null : '/uploads/property/original/' . $photoModel->name;
     }
 
     /**
