@@ -2,6 +2,7 @@
     "minimum-stability": "dev",
     "require": {
         "yiisoft/yii2": "~2.0.15@stable",
+        "ext-intl" : "*",
         "yiisoft/yii2-bootstrap4": "~1.0.0",
         "kartik-v/yii2-widgets": "dev-master",
         "kartik-v/yii2-grid": "dev-master",
