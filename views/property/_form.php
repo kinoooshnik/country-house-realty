@@ -13,7 +13,7 @@ use kartik\sortinput\SortableInput;
 /* @var $propertyForm app\models\forms\PropertyForm */
 /* @var $form yii\widgets\ActiveForm */
 
-$this->registerJsFile('https://api-maps.yandex.ru/2.1/?apikey=' . \Yii::$app->params['yandexMapToken'] .'&lang=ru_RU', ['position' => yii\web\View::POS_HEAD]);
+$this->registerJsFile('https://api-maps.yandex.ru/2.1/?apikey=' . \Yii::$app->params['yandexMapToken'] . '&lang=ru_RU', ['position' => yii\web\View::POS_HEAD]);
 ?>
 <div class="property-form">
     <?php $form = ActiveForm::begin([
