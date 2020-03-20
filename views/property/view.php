@@ -95,7 +95,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?= $property->address ?>
                 </address>
                 <h6 class="text-muted"><?= Property::$attributeLabels['description'] ?></h6>
-                <?= Yii::$app->formatter->asNtext($property->description) ?>
+                <?= nl2br($property->description) ?>
+                <? // Yii::$app->formatter->asNtext($property->description) ?>
             </div>
             <div class="col-md-4 mb-5">
                 <?
